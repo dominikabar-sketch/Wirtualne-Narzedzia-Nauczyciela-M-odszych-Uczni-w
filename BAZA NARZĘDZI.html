@@ -1,0 +1,2667 @@
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Wirtualne Narzędzia Nauczyciela</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+        :root {
+            --pink: #ff85a2;
+            --dark-pink: #e05275;
+            --soft-pink: #fce4ec;
+            --purple: #7b1fa2;
+            --bg: #fffafb;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg);
+            background-image: radial-gradient(var(--pink) 0.5px, transparent 0.5px), radial-gradient(var(--pink) 0.5px, var(--bg) 0.5px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            margin: 0;
+            color: #333;
+        }
+
+        /* --- NAGŁÓWEK --- */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px 20px;
+            text-align: center;
+            border-bottom: 6px solid var(--pink);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        .uni-info {
+            font-weight: 600;
+            color: #ff6699;
+            letter-spacing: 1px;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            color: #2d3436;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        h2.subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            color: #2d3436;
+            margin: 10px 0;
+        }
+
+        .description-text {
+            display: block;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            color: #636e72;
+            margin-top: 15px;
+            font-weight: 300;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .project-info {
+            font-family: 'Georgia', serif;
+            font-size: 1.2rem;
+            color: #ff6699;
+            margin: 25px 90px;
+            line-height: 1.4;
+        }
+
+        .hero-img {
+            max-width: 700px;
+            width: 95%;
+            border-radius: 30px;
+            margin: 30px auto;
+            display: block;
+            box-shadow: 0 15px 35px rgba(255, 133, 162, 0.3);
+            border: 10px solid white;
+        }
+
+        /* --- UKŁAD --- */
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 40px auto;
+            gap: 30px;
+            padding: 0 20px;
+        }
+
+        aside {
+    width: 300px;
+    flex-shrink: 0;
+    background: white;
+    padding: 25px;
+    border-radius: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 20px;
+
+    max-height: calc(100vh - 40px); /* wysokość widoku */
+    overflow: hidden;
+        }
+
+#filters {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    overflow-y: auto;
+    max-height: calc(100vh - 160px); /* zostawia miejsce na search */
+    padding-right: 6px;
+}
+
+
+        .search-box {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px solid var(--soft-pink);
+            border-radius: 50px;
+            margin-bottom: 25px;
+            font-family: inherit;
+            outline: none;
+            transition: 0.3s;
+            box-sizing: border-box;
+        }
+
+        .search-box:focus { border-color: var(--pink); }
+
+        /* --- FILTRY --- */
+        #filter-area {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 1px solid var(--soft-pink);
+            padding: 10px 15px;
+            border-radius: 15px;
+            text-align: left;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: 0.2s;
+            color: #555;
+        }
+
+        .filter-btn:hover {
+            background: var(--soft-pink);
+        }
+
+        .filter-btn.active {
+            background: var(--pink);
+            color: white;
+            border-color: var(--pink);
+            font-weight: 600;
+        }
+
+        /* --- SIATKA NARZĘDZI --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            flex-grow: 1;
+        }
+
+        .card {
+            background: white;
+            border-radius: 25px;
+            padding: 30px 20px;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.03);
+            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--pink);
+            box-shadow: 0 15px 30px rgba(255, 133, 162, 0.2);
+        }
+
+        .card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: var(--purple);
+            margin: 15px 0 10px;
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            color: #636e72;
+            line-height: 1.5;
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--soft-pink);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            font-size: 1.8rem;
+        }
+
+        /* --- OKNO MODALNE --- */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(45, 52, 54, 0.8);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 800px;
+            border-radius: 40px;
+            padding: 40px;
+            position: relative;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: var(--purple);
+            margin-top: 0;
+            padding-right: 40px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 25px; right: 30px;
+            font-size: 2.5rem;
+            cursor: pointer;
+            color: #b2bec3;
+            line-height: 1;
+        }
+
+        .tag {
+            display: inline-block;
+            background: var(--soft-pink);
+            color: var(--dark-pink);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin: 4px;
+            font-weight: 600;
+        }
+
+        .btn-link {
+            background: var(--pink);
+            color: white;
+            padding: 15px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 600;
+            margin-top: 25px;
+            transition: 0.3s;
+        }
+
+        .btn-link:hover { background: var(--dark-pink); transform: scale(1.05); }
+
+        @media (max-width: 768px) {
+            .container { flex-direction: column; }
+            aside { width: auto; position: static; }
+            h1 { font-size: 2.2rem; }
+        }
+    
+.group { margin-bottom: 24px; }
+.group-title {
+    font-size: 1rem;
+    color: var(--purple);
+    margin-bottom: 12px;
+    font-weight: 700;
+    padding-bottom: 5px;
+    border-bottom: 2px solid var(--soft-pink);
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="uni-info">AKADEMIA PEDAGOGIKI SPECJALNEJ IM. MARII GRZEGORZEWSKIEJ</div>
+    <h1>Wirtualne Narzędzia Nauczyciela</h1>
+    <h2 class="subtitle">Młodszych Uczniów</h2>
+    <span class="description-text">Interaktywny katalog zasobów edukacyjnych opracowany przez studentki III roku pedagogiki przedszkolnej i wczesnoszkolnej (rok akademicki 2025/2026)</span>
+
+   
+    <img src="obraz.jpg" class="hero-img" alt="Baner">
+ <div class="project-info">
+        PROJEKT REALIZOWANY W RAMACH PRZEDMIOTU: „Podstawy informatyki i technologie informacyjne dla nauczycieli wychowania przedszkolnego i edukacji wczesnoszkolnej” pod kierunkiem mgr Dominiki Bardzińskiej.
+    </div>
+</header>
+
+<div class="container">
+
+<aside>
+
+<input type="text" id="search" class="search-box" placeholder="🔎 Szukaj narzędzia...">
+
+<div id="filters" style="display:flex;flex-direction:column;gap:20px;"></div>
+
+</aside>
+
+<main class="grid" id="grid"></main>
+
+</div>
+
+<div class="modal" id="modal">
+<div class="modal-content" id="modal-body"></div>
+</div>
+
+<script>
+
+const tools = [
+    {
+        "id": 1,
+        "name": "Blooket",
+        "link": "https://www.blooket.com/",
+        "desc": "Blooket to internetowe narzędzie edukacyjne, które pozwala nauczycielom tworzyć interaktywne quizy w formie gier. Uczniowie odpowiadają na pytania, a jednocześnie rywalizują w różnych trybach gry, np. zdobywając punkty, monety lub budując własne „postacie” w grze.",
+        "pros": "Aplikacja angażuje uczniów poprzez wykorzystanie elementów rywalizacji i interaktywnych quizów. Narzędzie motywuje dzieci do aktywnego udziału w zajęciach oraz nauki poprzez zabawę. \nUmożliwia tworzenie różnorodnych gier edukacyjnych i quizów, a także korzystanie z gotowych materiałów. Dużą zaletą jest atrakcyjna forma przypominająca gry komputerowe, dzięki czemu uczniowie chętnie uczestniczą w aktywnościach. Aplikacja rozwija kompetencje cyfrowe, współpracę oraz zaangażowanie uczniów; Narzędzie pozwala na zastosowanie szablonu gotowych gier do materiałów, które nauczyciel może wstawić manualnie bądź zimportować z quizleta, excela czy z pomocą khanmigo (ai khan academy). Można wybrać poziom trudności oraz tryb (jeden gracz/wielu graczy). Są materiały zweryfikowane przez nauczycieli.; szybka i łatwa w obsłudze aplikacja, kreatywna i ciekawa dla dzieci, nauka poprzez grę i zabawę",
+        "cons": "Część funkcji dostępna jest wyłącznie w wersji płatnej. Aplikacja wymaga dostępu do Internetu oraz urządzeń cyfrowych. Działa głównie w języku angielskim, co może utrudniać korzystanie młodszym uczniom. Nadmierne skupienie na rywalizacji może powodować rozproszenie uwagi części uczniów.; Gotowe materiały raczej w języku angielskim. Polega raczej na tworzeniu gier. Zdobywanie nagród może zbyt rozproszyć od nauki.; na ten moment nie zauważyłam wad :)",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Powtórki materiału"
+            ],
+            "Funkcje ": [
+                "Personalizacja poziomu trudności"
+            ],
+            "Grupa docelowa": [
+                "Dla nauczycieli"
+            ],
+            "Koszt użytkowania": [
+                "Bezpłatnie"
+            ],
+            "Wymagane jest logowanie": [
+                "tak"
+            ],
+            "Ocena ogólna": [
+                "5"
+            ],
+            "Obsługiwana platforma": [
+                "przeglądarka internetowa"
+            ],
+            "Typ interakcji": [
+                "Ograniczona interaktywność (dozwolone są tylko określone działania)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Regulacja trudności"
+            ],
+            "Typ zastosowań": [
+                "Wielofunkcyjne (przeznaczone do różnych zastosowań lub łączące kilka obszarów edukacyjnych)"
+            ],
+            "Język": [
+                "wielojęzyczny"
+            ]
+        }
+    },
+    {
+        "id": 4,
+        "name": "Book Creator",
+        "link": "https://www.bing.com/ck/a?!&&p=76b40766d1cb7000c6fd613e0d8ab0ea3e0736a544fcb9651458251e3efbc333JmltdHM9MTc3ODU0NDAwMA&ptn=3&ver=2&hsh=4&fclid=3d6a2d47-1b41-6663-066e-39ca1a536757&psq=book+creator&u=a1aHR0cHM6Ly9ib29rY3JlYXRvci5jb20v",
+        "desc": "Book Creator to proste narzędzie internetowe, które pozwala tworzyć własne książki cyfrowe. Uczniowie i nauczyciele mogą dodawać tekst, zdjęcia, rysunki, nagrania audio i wideo, tworząc interaktywne e-booki.",
+        "pros": "Book Creator rozwija kreatywność dzieci oraz zachęca je do aktywnego tworzenia własnych książek, opowiadań i prezentacji. Aplikacja wspiera naukę czytania i pisania, umożliwia dodawanie ilustracji, nagrań dźwiękowych i multimediów, a także rozwija kompetencje cyfrowe uczniów.; Narzędzie sprzyja realizacji strategii storytellingu oraz metod projektowych. Rozwija u dzieci kreatywność oraz kompetencje cyfrowe.; umożliwia tworzenie interaktywnych książek, komiksów, przepisów, \natrakcyjna forma nauki\nrozwija kreatywność; Łatwe tworzenie interaktywnych książek i materiałów edukacyjnych, możliwość dodawania zdjęć i filmów.; łatwy w obsłudze, szybkie tworzenie materiałów, duża kreatywność, dobre dla przedszkola i klas 1–3, wspiera  rozwija kompetencje cyfrowe",
+        "cons": "Aplikacja wymaga dostępu do urządzeń elektronicznych i Internetu. Część funkcji dostępna jest jedynie w wersji płatnej. Przygotowanie bardziej rozbudowanych projektów może być czasochłonne.; Część funkcji dostępna tylko w wersji płatnej.; Głównym ogranicznikiem jest limit liczby stworzonych książek. Pełna funkcjonalność zależy od wykupienia subskrypcji. Narzędzie wymaga również stabilnego łącza internetowego.; brak gotowych ćwiczeń, nie służy do zarządzania klasą ani oceniania, częściowa zależność od internetu, brak automatycznej oceny i AI, interfejs nie w pełni po polsku.; niektóre funkcje są płatne,\nw jezyku angielskim",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Nauczanie zdalne"
+            ],
+            "Funkcje ": [
+                "Personalizacja poziomu trudności"
+            ],
+            "Grupa docelowa": [
+                "Dla nauczycieli"
+            ],
+            "Koszt użytkowania": [
+                "Freemium (niektóre opcje są bezpłatne, inne wymagają opłaty)"
+            ],
+            "Wymagane jest logowanie": [
+                "tak"
+            ],
+            "Ocena ogólna": [
+                "5"
+            ],
+            "Obsługiwana platforma": [
+                "komputer - Mac OS"
+            ],
+            "Typ interakcji": [
+                "Interaktywna (dziecko ma wpływ na działanie aplikacji)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Regulacja trudności"
+            ],
+            "Typ zastosowań": [
+                "Wielofunkcyjne (przeznaczone do różnych zastosowań lub łączące kilka obszarów edukacyjnych)"
+            ],
+            "Język": [
+                "wielojęzyczny"
+            ]
+        }
+    },
+    {
+        "id": 9,
+        "name": "Canva",
+        "link": "https://www.canva.com/pl_pl/?msockid=07f4f70e346e6e3a3c50e4cd357c6f29",
+        "desc": "Canva to internetowe narzędzie do tworzenia grafik i materiałów wizualnych. Umożliwia projektowanie m.in. prezentacji, plakatów, kart pracy, infografik i postów do mediów społecznościowych — nawet bez doświadczenia graficznego.",
+        "pros": "- Materiały angażują uczniów poprzez swoją estetyką\n- Nauczyciel może tworzyć ciekawe prezentacje, plakaty, karty pracy\n- Gotowe szablony przyspieszają przygotowanie materiałów; bardzo intuicyjna obsługa\nogromna baza szablonów edukacyjnych\nrozwija kreatywność uczniów\numożliwia tworzenie atrakcyjnych materiałów\nwspiera pracę indywidualną i grupową\ndostępna na różnych urządzeniach",
+        "cons": "- Dostęp do internetu jest kluczowy \n- Część opcji jest płatna w formie Canvy Pro; wymaga Internetu\nczęść funkcji jest płatna (poza wersją edukacyjną)\nmoże rozpraszać nadmiarem funkcji\nmłodsze dzieci potrzebują wsparcia przy obsłudze",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Powtórki materiału"
+            ],
+            "Funkcje ": [
+                "Gotowe ćwiczenia"
+            ],
+            "Grupa docelowa": [
+                "Dla nauczycieli"
+            ],
+            "Koszt użytkowania": [
+                "Freemium (niektóre opcje są bezpłatne, inne wymagają opłaty)"
+            ],
+            "Wymagane jest logowanie": [
+                "tak"
+            ],
+            "Ocena ogólna": [
+                "4"
+            ],
+            "Obsługiwana platforma": [
+                "komputer - Mac OS"
+            ],
+            "Typ interakcji": [
+                "Interaktywna (dziecko ma wpływ na działanie aplikacji)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Piktogramy"
+            ],
+            "Typ zastosowań": [
+                "Narzędzia do projektowania pomocy dydaktycznych"
+            ],
+            "Język": [
+                "wielojęzyczny"
+            ]
+        }
+    },
+    {
+        "id": 11,
+        "name": "ChessKid",
+        "link": "https://www.chesskid.com/pl/",
+        "desc": "ChessKid – ChessKid to platforma edukacyjna, która uczy dzieci gry w szachy poprzez interaktywne lekcje, zadania i możliwość gry z innymi uczniami online. Wspiera rozwój logicznego myślenia, koncentracji i strategii w przyjaznej, bezpiecznej formie.",
+        "pros": "może być to wykorzystywane, gdy część osób skończyło pracę, aby reszta miała zajęcie dodatkowe",
+        "cons": "nie jest to aplikacja stricte do matematyki, przyrody, polskiego, tylko do rozwijania umiejętności logicznego myślenia, przez to może nie być chętnie wybierana",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Praca indywidualna"
+            ],
+            "Funkcje ": [
+                "Gotowe ćwiczenia"
+            ],
+            "Grupa docelowa": [
+                "Dla wszystkich grup wiekowych"
+            ],
+            "Koszt użytkowania": [
+                "Bezpłatnie"
+            ],
+            "Wymagane jest logowanie": [
+                "nie"
+            ],
+            "Ocena ogólna": [
+                "3"
+            ],
+            "Obsługiwana platforma": [
+                "przeglądarka internetowa"
+            ],
+            "Typ interakcji": [
+                "Ograniczona interaktywność (dozwolone są tylko określone działania)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Nie posiada takich funkcji"
+            ],
+            "Typ zastosowań": [
+                "Logiczne myślenie"
+            ],
+            "Język": [
+                "polski"
+            ]
+        }
+    },
+    {
+        "id": 12,
+        "name": "Chrome Music Lab",
+        "link": "https://musiclab.chromeexperiments.com/",
+        "desc": "Chrome Music Lab – Chrome Music Lab to zestaw interaktywnych eksperymentów muzycznych online, które pozwalają dzieciom poznawać rytm, dźwięk i melodię poprzez zabawę i działanie. Idealne do wprowadzenia podstaw muzyki w atrakcyjny wizualnie sposób.",
+        "pros": "Łatwość obsługi, rozwijanie kreatywności (uczniowie mogą tworzyć własne melodie i rytmy), narzędzie zachęca do eksperymentowania z dźwiękiem",
+        "cons": "Ograniczone możliwości aplikacji, ryzyko rozproszenia uczniów, ograniczona personalizacja",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Nauczanie zdalne"
+            ],
+            "Funkcje ": [
+                "Gotowe ćwiczenia"
+            ],
+            "Grupa docelowa": [
+                "8 i starsze"
+            ],
+            "Koszt użytkowania": [
+                "Bezpłatnie"
+            ],
+            "Wymagane jest logowanie": [
+                "nie"
+            ],
+            "Ocena ogólna": [
+                "4"
+            ],
+            "Obsługiwana platforma": [
+                "przeglądarka internetowa"
+            ],
+            "Typ interakcji": [
+                "Interaktywna (dziecko ma wpływ na działanie aplikacji)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Nie posiada takich funkcji"
+            ],
+            "Typ zastosowań": [
+                "Rozwijanie umiejętności muzycznych"
+            ],
+            "Język": [
+                "angielski"
+            ]
+        }
+    },
+    {
+        "id": 13,
+        "name": "ClassDojo",
+        "link": "https://www.classdojo.com/",
+        "desc": "ClassDojo – ClassDojo to narzędzie do zarządzania klasą i komunikacji, które umożliwia nauczycielom nagradzanie uczniów, monitorowanie zachowania oraz kontakt z rodzicami. Pomaga budować pozytywną atmosferę w klasie.",
+        "pros": "- wygodna do kontaktu z rodzicami\n- wygodna w obsłudze\n- prosty interfejs\n- przesyłanie zdjęć i informacji\n- ocenianie zachowanie; 1. dobry kontakt z rodzicami/opiekunami\n2. wzmacnianie pozytywnych zachowań\n3. prosty w obsłudze; Ułatwia komunikację między nauczycielem, uczniami i rodzicami, motywuje dzieci poprzez system punktów i odznak.; Ułatwienie współpracy między rodzicami a nauczycielami, wspieranie nauczania społeczno-emocjonalnego, gratyfikacja uczniów; poprawia komunikację z rodzicami i uczniami,\nułatwia organizację klasy,\nsystem punktów; poprawia komunikację z rodzicami, pomaga organizować pracę klasy, ułatwia monitorowanie postępów; prosty i przejrzysty interfejs\nszybki kontakt z rodzicami\nmotywowanie dzieci poprzez system nagród\nmożliwość pracy na telefonie i komputerze",
+        "cons": "- wymaga regularnego korzystania\n- część rodziców może nie znać aplikacji; 1. może wywołać presję u dzieci \n2. możliwe problemy z systemem punktowym; Część funkcji dodatkowych jest płatna.; Ryzyko powstania niezdrowej rywalizacji (o ilość punktów, którzy uczniowie dostają za aktywność); potrzebny jest dostęp do internetu,; wymaga regularnego korzystania przez rodziców\nczęść rodziców może mieć trudności techniczne\nkonieczność ochrony danych i prywatności uczniów; wymaga zaangażowania rodziców w regularne korzystanie z aplikacji",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Praca grupowa"
+            ],
+            "Funkcje ": [
+                "Umożliwia komunikację z nauczycielami, rodzicami, bezpieczne udostępnianie zdjęć"
+            ],
+            "Grupa docelowa": [
+                "Dla nauczycieli"
+            ],
+            "Koszt użytkowania": [
+                "Bezpłatnie"
+            ],
+            "Wymagane jest logowanie": [
+                "tak"
+            ],
+            "Ocena ogólna": [
+                "4"
+            ],
+            "Obsługiwana platforma": [
+                "przeglądarka internetowa"
+            ],
+            "Typ interakcji": [
+                "Ograniczona interaktywność (dozwolone są tylko określone działania)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Nie posiada takich funkcji"
+            ],
+            "Typ zastosowań": [
+                "Wielofunkcyjne (przeznaczone do różnych zastosowań lub łączące kilka obszarów edukacyjnych)"
+            ],
+            "Język": [
+                "wielojęzyczny"
+            ]
+        }
+    },
+    {
+        "id": 20,
+        "name": "Colorify AI",
+        "link": "https://colorifyai.art/",
+        "desc": "Colorify AI – Colorify AI to narzędzie wykorzystujące sztuczną inteligencję do generowania i kolorowania obrazów, które mogą być wykorzystywane w edukacji jako materiały kreatywne i ilustracje do zajęć.",
+        "pros": "Pozwala w prosty sposób wygenerować unikalne kolorowanki przy pomocy sztucznej inteligencji.",
+        "cons": "Nie ma języka polskiego, trzeba się zalogować i niestety nie wszystko jest bezpłatne.",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Zadanie domowe"
+            ],
+            "Funkcje ": [
+                "Personalizacja poziomu trudności"
+            ],
+            "Grupa docelowa": [
+                "Dla nauczycieli"
+            ],
+            "Koszt użytkowania": [
+                "Freemium (niektóre opcje są bezpłatne, inne wymagają opłaty)"
+            ],
+            "Wymagane jest logowanie": [
+                "tak"
+            ],
+            "Ocena ogólna": [
+                "4"
+            ],
+            "Obsługiwana platforma": [
+                "przeglądarka internetowa"
+            ],
+            "Typ interakcji": [
+                "Nie dotyczy"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Regulacja trudności"
+            ],
+            "Typ zastosowań": [
+                "Narzędzia do projektowania pomocy dydaktycznych"
+            ],
+            "Język": [
+                "angielski"
+            ]
+        }
+    },
+    {
+        "id": 21,
+        "name": "Curipod",
+        "link": "https://www.bing.com/ck/a?!&&p=289d55c6ea4679d3a82e391d9bfe724a4d720964e757354a58748df25b5f752cJmltdHM9MTc3ODU0NDAwMA&ptn=3&ver=2&hsh=4&fclid=14e4ed9d-6034-6942-38f2-f88661156814&psq=curipod&u=a1aHR0cHM6Ly9jdXJpcG9kLmNvbS8",
+        "desc": "Curipod – Curipod pozwala tworzyć interaktywne lekcje i prezentacje, w których uczniowie mogą aktywnie odpowiadać na pytania i brać udział w zajęciach w czasie rzeczywistym.",
+        "pros": "Szybkie tworzenie interaktywnych lekcji z użyciem sztucznej inteligencji.",
+        "cons": "Tworzenie większej ilości lekcji wymaga konta premium (płatnego). ",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Nauczanie zdalne"
+            ],
+            "Funkcje ": [
+                "Personalizacja poziomu trudności"
+            ],
+            "Grupa docelowa": [
+                "Dla nauczycieli"
+            ],
+            "Koszt użytkowania": [
+                "Freemium (niektóre opcje są bezpłatne, inne wymagają opłaty)"
+            ],
+            "Wymagane jest logowanie": [
+                "tworzenie tak, oglądanie nie"
+            ],
+            "Ocena ogólna": [
+                "4"
+            ],
+            "Obsługiwana platforma": [
+                "tablet - Android"
+            ],
+            "Typ interakcji": [
+                "Interaktywna (dziecko ma wpływ na działanie aplikacji)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Piktogramy"
+            ],
+            "Typ zastosowań": [
+                "Narzędzia do projektowania pomocy dydaktycznych"
+            ],
+            "Język": [
+                "wielojęzyczny"
+            ]
+        }
+    },
+    {
+        "id": 22,
+        "name": "Diffit",
+        "link": "https://app.diffit.me/",
+        "desc": "Diffit – Diffit to narzędzie, które upraszcza teksty i dostosowuje je do poziomu uczniów, ułatwiając pracę nauczycielom i wspierając zrozumienie trudnych treści.",
+        "pros": "Szybkie tworzenie materiałów dostosowanych do poziomu uczniów. Upraszczanie tekstów, generuje pytania, słownictwo i ćwiczenia do czytania ze zrozumieniem.",
+        "cons": "Działa głównie w j. angielskim",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Powtórki materiału"
+            ],
+            "Funkcje ": [
+                "Integracja z innymi platformami"
+            ],
+            "Grupa docelowa": [
+                "Dla nauczycieli"
+            ],
+            "Koszt użytkowania": [
+                "Freemium (niektóre opcje są bezpłatne, inne wymagają opłaty)"
+            ],
+            "Wymagane jest logowanie": [
+                "tak"
+            ],
+            "Ocena ogólna": [
+                "4"
+            ],
+            "Obsługiwana platforma": [
+                "przeglądarka internetowa"
+            ],
+            "Typ interakcji": [
+                "Ograniczona interaktywność (dozwolone są tylko określone działania)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Duże czcionki"
+            ],
+            "Typ zastosowań": [
+                "Narzędzia do projektowania pomocy dydaktycznych"
+            ],
+            "Język": [
+                "angielski"
+            ]
+        }
+    },
+    {
+        "id": 23,
+        "name": "Duolingo",
+        "link": "https://pl.duolingo.com/",
+        "desc": "Duolingo – Duolingo to popularna aplikacja do nauki języków obcych, która wykorzystuje krótkie ćwiczenia i elementy gry, aby ułatwić systematyczną naukę słownictwa i gramatyki.",
+        "pros": "- Motywuje uczniów do regularnej nauki\n- Grywalizacja zwiększa zaangażowanie i pomaga budować nawyk nauki.\n- Krótka i wygodna forma ćwiczeń\n- Lekcje są krótkie i łatwe do wykorzystania jako praca domowa, powtórka lub rozgrzewka na początku zajęć.\n- Dostępność i niski koszt\n- Ćwiczenie słownictwa i podstaw gramatyki\n- Atrakcyjność dla młodszych uczniów; Duże zaangażowanie uczniów, indywidualizacja nauki, darmowa wersja dla szkół; Nauka poprzez zabawę.\nUtrwalanie podstawowej wiedzy z zakresu języka obcego.\nNauczyciele mogą tworzyć klasy, dostosować zadania do poziomu uczniów i obserwować ich postępy. \nBardzo łatwe i intuicyjne działanie aplikacji. \nDuży wybór języków.",
+        "cons": "- Nie zastępuje kontaktu z nauczycielem\n- Ograniczone rozwijanie umiejętności mówienia\nĆwiczenia konwersacyjne są uproszczone i często mało naturalne. Uczniowie mogą znać słówka, ale mieć trudność z prawdziwą rozmową.\nNadmierna grywalizacja\n- Część uczniów skupia się bardziej na zdobywaniu punktów niż na realnej nauce języka. Badania pokazują, że mechanizmy gry mogą czasem odciągać od faktycznego uczenia się.\n- Mało rozwinięte wyjaśnienia gramatyczne\nDuolingo często opiera się na powtarzaniu i intuicji, bez dokładnego tłumaczenia zasad językowych.\n- Sztuczne lub nienaturalne zdania\nNiektóre przykłady zdań są mało praktyczne i nie oddają naturalnej komunikacji.\n- Ograniczony rozwój języka specjalistycznego\nAplikacja skupia się głównie na codziennych sytuacjach, a słabiej rozwija słownictwo zawodowe czy akademickie.; Nauka bywa powierzchowna, reklamy i funkcje premium; Z coraz wyższym poziomem zaawansowania, ćwiczenia stają się powtarzalne. \nMały nacisk na gramatykę, bardziej na słowa w innym języku.",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Zajęcia wyrównawcze"
+            ],
+            "Funkcje ": [
+                "Personalizacja poziomu trudności"
+            ],
+            "Grupa docelowa": [
+                "Dla nauczycieli"
+            ],
+            "Koszt użytkowania": [
+                "Freemium (niektóre opcje są bezpłatne, inne wymagają opłaty)"
+            ],
+            "Wymagane jest logowanie": [
+                "tak"
+            ],
+            "Ocena ogólna": [
+                "4"
+            ],
+            "Obsługiwana platforma": [
+                "komputer - Mac OS"
+            ],
+            "Typ interakcji": [
+                "Interaktywna (dziecko ma wpływ na działanie aplikacji)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Synteza mowy"
+            ],
+            "Typ zastosowań": [
+                "Rozwijanie kompetencji cyfrowych (Edukacja informatyczna)"
+            ],
+            "Język": [
+                "wielojęzyczny"
+            ]
+        }
+    },
+    {
+        "id": 26,
+        "name": "Dyktanda.net",
+        "link": "https://www.dyktanda.net/dyktando-03.php",
+        "desc": "Dyktanda.net – Dyktanda.net to platforma oferująca dyktanda online i ćwiczenia z języka polskiego, wspierające naukę ortografii i poprawnej pisowni.",
+        "pros": "strona oprócz ćwiczeń zawiera teoretyczne wprowadzenie zagadnienia oraz inne formy pracy (np. karta pracy, testy).",
+        "cons": "brak zapisu postepów",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Zadanie domowe"
+            ],
+            "Funkcje ": [
+                "Personalizacja poziomu trudności"
+            ],
+            "Grupa docelowa": [
+                "8 i starsze"
+            ],
+            "Koszt użytkowania": [
+                "Bezpłatnie"
+            ],
+            "Wymagane jest logowanie": [
+                "nie"
+            ],
+            "Ocena ogólna": [
+                "5"
+            ],
+            "Obsługiwana platforma": [
+                "przeglądarka internetowa"
+            ],
+            "Typ interakcji": [
+                "Interaktywna (dziecko ma wpływ na działanie aplikacji)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Duże czcionki"
+            ],
+            "Typ zastosowań": [
+                "Narzędzia do projektowania pomocy dydaktycznych"
+            ],
+            "Język": [
+                "polski"
+            ]
+        }
+    },
+    {
+        "id": 27,
+        "name": "Educaplay",
+        "link": "https://www.educaplay.com/",
+        "desc": "Educaplay – Educaplay umożliwia tworzenie interaktywnych gier edukacyjnych, quizów i ćwiczeń, które można wykorzystać na lekcjach w różnych przedmiotach.",
+        "pros": "Angażuje dzieci w wykonywanie zadań, umożliwia monitorowanie postępów uczniów, wspiera naukę poprzez interaktywną formę, jest atrakcyjna wizualnie i łatwa w obsłudze dla dzieci, może być wykorzystywana zarówno w szkole, jak i w domu.; Aplikacja umożliwia tworzenie atrakcyjnych i interaktywnych ćwiczeń dla uczniów. \nWspiera aktywizację dzieci, rozwija motywację do nauki oraz pozwala dostosować poziom trudności do potrzeb uczniów. \nNarzędzie jest intuicyjne, posiada gotowe szablony i umożliwia wykorzystanie multimediów. Dużą zaletą aplikacji jest również różnorodność aktywności i ćwiczeń, które można tworzyć, np. quizy, memory, wykreślanki, krzyżówki, dopasowywanie czy gry edukacyjne. \nAplikacja jest łatwa w obsłudze, dzięki czemu również uczniowie mogą samodzielnie tworzyć własne materiały i aktywności.; Gotowe szablony, na których można bazować.\nNauka poprzez zabawę.\nWiele różnych ćwiczeń.\nMożliwość śledzenia wyników uczniów.; łatwa i przyjemna w obsłudze aplikacja, możliwość generowania treści ai, darmowa",
+        "cons": "Część funkcji dostępna w premium.\nPełne śledzenie postępów uczniów wymaga zalogowania.; Niektóre funkcje są dostępne wyłącznie w wersji płatnej. Aplikacja wymaga dostępu do Internetu oraz urządzeń cyfrowych.; Wymaga dostępu do internetu.; część opcji płatna, mniejsza ilość gotowych aplikacji",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Powtórki materiału"
+            ],
+            "Funkcje ": [
+                "Personalizacja poziomu trudności"
+            ],
+            "Grupa docelowa": [
+                "Dla nauczycieli"
+            ],
+            "Koszt użytkowania": [
+                "Bezpłatnie"
+            ],
+            "Wymagane jest logowanie": [
+                "tak"
+            ],
+            "Ocena ogólna": [
+                "5"
+            ],
+            "Obsługiwana platforma": [
+                "przeglądarka internetowa"
+            ],
+            "Typ interakcji": [
+                "Interaktywna (dziecko ma wpływ na działanie aplikacji)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Regulacja trudności"
+            ],
+            "Typ zastosowań": [
+                "Wielofunkcyjne (przeznaczone do różnych zastosowań lub łączące kilka obszarów edukacyjnych)"
+            ],
+            "Język": [
+                "wielojęzyczny"
+            ]
+        }
+    },
+    {
+        "id": 31,
+        "name": "Eduzabawy",
+        "link": "https://eduzabawy.com/",
+        "desc": "Eduzabawy – Eduzabawy to zbiór materiałów, gier i ćwiczeń edukacyjnych dla dzieci, które wspierają naukę poprzez zabawę i aktywność.",
+        "pros": "Aplikacja posiada dużo gotowych pomocy dydaktycznych. Nauczyciel może drukować gotowe karty pracy, modyfikować je lub angażować dzieci w granie w gry, quizy",
+        "cons": "Platforma wymaga dostępu do internetu oraz urządzeń elektrycznych dla każdego dziecka w przypadku np. gier i quizów.",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Nauczanie zdalne"
+            ],
+            "Funkcje ": [
+                "Tworzenie własnych materiałów"
+            ],
+            "Grupa docelowa": [
+                "Dla wszystkich grup wiekowych"
+            ],
+            "Koszt użytkowania": [
+                "Bezpłatnie"
+            ],
+            "Wymagane jest logowanie": [
+                "nie"
+            ],
+            "Ocena ogólna": [
+                "4"
+            ],
+            "Obsługiwana platforma": [
+                "przeglądarka internetowa"
+            ],
+            "Typ interakcji": [
+                "Interaktywna (dziecko ma wpływ na działanie aplikacji)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Wysoki kontrast"
+            ],
+            "Typ zastosowań": [
+                "Gry edukacyjne"
+            ],
+            "Język": [
+                "polski"
+            ]
+        }
+    },
+    {
+        "id": 32,
+        "name": "Flippity",
+        "link": "https://flippity.net/ ",
+        "desc": "Flippity – Flippity pozwala tworzyć gry i interaktywne ćwiczenia edukacyjne na podstawie arkuszy Google, co ułatwia szybkie przygotowanie materiałów dydaktycznych.",
+        "pros": "- Brak reklam i możliwość bezpłatnego korzystania z aplikacji\n- Brak konieczności zakładania kont przez uczniów\n- Duża różnorodność narzędzi w jednym miejscu; 1. całkowicie za darmo\n2. brak konieczności logowania dla dzieci\n3. błyskawiczna edycja \n4. synteza mowy \n5. różnorodność\n6. przejrzystość; Aplikacja umożliwia tworzenie różnorodnych interaktywnych aktywności edukacyjnych, takich jak quizy, fiszki, memory, koła fortuny, losowanki czy gry edukacyjne. \nNarzędzie angażuje uczniów i wspiera naukę poprzez zabawę. \nDużą zaletą jest możliwość szybkiego tworzenia własnych materiałów oraz personalizacji ćwiczeń. Flippity wspiera rozwijanie kompetencji cyfrowych i kreatywności uczniów. Uczniowie również mogą samodzielnie tworzyć własne aktywności i materiały.",
+        "cons": "- Interfejs edytora jest w języku angielskim\n- Brak panelu wyników - nie są zapisywane postępy uczniów\n- Do tworzenia materiałów niezbędne jest posiadanie konta Google i umiejętność obsługi Arkuszy Google\n- Wymagany internet\n- Dość surowy wygląd niektórych szablonów; 1. brak śledzenia postępów w podstawowej wersji \n2. strona po angielsku; Narzędzie działa głównie online i wymaga dostępu do Internetu. Aplikacji jest głównie w języku angielskim, co może utrudniać korzystanie młodszym uczniom.",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Powtórki materiału"
+            ],
+            "Funkcje ": [
+                "Personalizacja poziomu trudności"
+            ],
+            "Grupa docelowa": [
+                "Dla wszystkich grup wiekowych"
+            ],
+            "Koszt użytkowania": [
+                "Bezpłatnie"
+            ],
+            "Wymagane jest logowanie": [
+                "nie"
+            ],
+            "Ocena ogólna": [
+                "4"
+            ],
+            "Obsługiwana platforma": [
+                "tablet - Android"
+            ],
+            "Typ interakcji": [
+                "Interaktywna (dziecko ma wpływ na działanie aplikacji)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Duże czcionki"
+            ],
+            "Typ zastosowań": [
+                "Wielofunkcyjne (przeznaczone do różnych zastosowań lub łączące kilka obszarów edukacyjnych)"
+            ],
+            "Język": [
+                "angielski"
+            ]
+        }
+    },
+    {
+        "id": 35,
+        "name": "Gimkit",
+        "link": "https://www.gimkit.com/",
+        "desc": "Gimkit – Gimkit to platforma quizowa, w której uczniowie odpowiadają na pytania i zdobywają punkty w formie gry, co zwiększa zaangażowanie i motywację.",
+        "pros": "angażująca forma nauki\nelement rywalizacji motywuje uczniów\nmożliwość nauki przez gry\nszybkie powtórki materiału\natrakcyjny dla młodzieży\nmożliwość pracy na żywo i samodzielnie\nłatwe tworzenie quizów\nrozwija refleks i współpracę",
+        "cons": "część funkcji wymaga płatnej wersji\nuczniowie mogą skupiać się bardziej na grze niż nauce\nwymaga dostępu do internetu i urządzeń\nmoże rozpraszać podczas lekcji\nograniczone rozwijanie umiejętności praktycznych\nprzygotowanie quizów bywa czasochłonne\nmniej skuteczny przy trudniejszych tematach\nnie zastępuje tradycyjnego nauczania",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Powtórki materiału"
+            ],
+            "Funkcje ": [
+                "Personalizacja poziomu trudności"
+            ],
+            "Grupa docelowa": [
+                "Dla nauczycieli"
+            ],
+            "Koszt użytkowania": [
+                "Freemium (niektóre opcje są bezpłatne, inne wymagają opłaty)"
+            ],
+            "Wymagane jest logowanie": [
+                "tworzenie tak, oglądanie nie"
+            ],
+            "Ocena ogólna": [
+                "4"
+            ],
+            "Obsługiwana platforma": [
+                "komputer - Mac OS"
+            ],
+            "Typ interakcji": [
+                "Ograniczona interaktywność (dozwolone są tylko określone działania)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Regulacja trudności"
+            ],
+            "Typ zastosowań": [
+                "Nauka czytania i pisania"
+            ],
+            "Język": [
+                "wielojęzyczny"
+            ]
+        }
+    },
+    {
+        "id": 36,
+        "name": "iKorektor",
+        "link": "https://ikorektor.pl/",
+        "desc": "iKorektor – iKorektor to narzędzie do sprawdzania i poprawy tekstów, które pomaga w eliminowaniu błędów językowych i poprawie jakości pisania.",
+        "pros": "Szybkie wykrywanie błędów, pomoc przy poprawianiu prac uczniów, łatwość obsługi",
+        "cons": "Ryzyko bezrefleksyjnego korzystania, możliwe błędy AI i autokorekty",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Nauczanie zdalne"
+            ],
+            "Funkcje ": [
+                "Automatyczna informacja zwrotna"
+            ],
+            "Grupa docelowa": [
+                "6-7 lat"
+            ],
+            "Koszt użytkowania": [
+                "Freemium (niektóre opcje są bezpłatne, inne wymagają opłaty)"
+            ],
+            "Wymagane jest logowanie": [
+                "nie"
+            ],
+            "Ocena ogólna": [
+                "4"
+            ],
+            "Obsługiwana platforma": [
+                "przeglądarka internetowa"
+            ],
+            "Typ interakcji": [
+                "Interaktywna (dziecko ma wpływ na działanie aplikacji)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Duże czcionki"
+            ],
+            "Typ zastosowań": [
+                "Nauka czytania i pisania"
+            ],
+            "Język": [
+                "polski"
+            ]
+        }
+    },
+    {
+        "id": 37,
+        "name": "Interacty",
+        "link": "https://interacty.me/pl",
+        "desc": "Interacty – Interacty umożliwia tworzenie interaktywnych gier, quizów i materiałów edukacyjnych, które można wykorzystać w nauczaniu stacjonarnym i online.",
+        "pros": "Duża różnorodność ćwiczeń do wyboru. Możliwość korzystania bez logowania. Ponad 20 interaktywnych bloków aktywności oraz możliwość tworzenia materiałów do druku.",
+        "cons": "Strona nie jest najbardziej intuicyjna, przynajmniej na początku. Istnienie zakładki biznes i edukacja, i produkty obok siebie.",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Nauczanie zdalne"
+            ],
+            "Funkcje ": [
+                "Elementy grywalizacji"
+            ],
+            "Grupa docelowa": [
+                "Dla nauczycieli"
+            ],
+            "Koszt użytkowania": [
+                "Freemium (niektóre opcje są bezpłatne, inne wymagają opłaty)"
+            ],
+            "Wymagane jest logowanie": [
+                "nie"
+            ],
+            "Ocena ogólna": [
+                "4"
+            ],
+            "Obsługiwana platforma": [
+                "przeglądarka internetowa"
+            ],
+            "Typ interakcji": [
+                "Interaktywna (dziecko ma wpływ na działanie aplikacji)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Nie posiada takich funkcji"
+            ],
+            "Typ zastosowań": [
+                "Platforma do zarządzania klasą, motywowania uczniów i śledzenia postępów"
+            ],
+            "Język": [
+                "polski"
+            ]
+        }
+    },
+    {
+        "id": 38,
+        "name": "Kahoot!",
+        "link": "https://kahoot.it/",
+        "desc": "Kahoot! – Kahoot! to platforma do tworzenia quizów w formie gry, w której uczniowie odpowiadają na pytania w czasie rzeczywistym, rywalizując ze sobą.",
+        "pros": "- Zwiększa zaangażowanie uczniów\n- Daje informację zwrotną o wiedzy uczniów\n- Sprzyja integracji i współpracy; Aplikacja posiada wiele zalet, gdyż nauczyciel może ją wykorzystać do różnorodnych tematów, jako forma sprawdzenia wiedzy, powtórzenie materiału czy też aktywizujący, przyjemny dla uczniów quiz. Jest ona również prosta w obsłudze, a także przyjemna dla oka pod względem wizualnym.; Kahoot! angażuje uczniów do aktywnej nauki poprzez zabawę i elementy rywalizacji. Ułatwia nauczycielowi przygotowywanie atrakcyjnych quizów oraz szybkie sprawdzanie wiedzy uczniów, zwiększa motywację dzieci, rozwija kompetencje cyfrowe i umożliwia pracę indywidualną i grupową.; Wysoka aktywizacja i zaangażowanie uczniów. Natychmiastowa informacja zwrotna (feedback). Szybka diagnoza wiedzy. Łatwość tworzenia materiałów. Uatrakcyjnienie lekcji. Wszechstronność. Wsparcie pracy zdalnej i stacjonarnej.",
+        "cons": "- Potrzebny jest internet\n- Przeważnie pytania A,B,C,D i Prawda/ Fałsz - reszta jest płatna; Aby zaangażować uczniów w wykonanie quizu, muszą posiadać oni urządzenie elektroniczne z dostępem do internetu. \nKahoot najlepiej sprawdza krótkie pytania zamknięte. Trudniej za jego pomocą rozwijać umiejętność argumentowania, tworzenia dłuższych wypowiedzi czy krytycznego myślenia.\nUczniowie mogą zbyt bardzo skupić się na rywalizacji, zapominając o tym, że ma to być nauka połączona z zabawą.; Aplikacja wymaga dostępu do Internetu oraz urządzeń elektronicznych. Młodsze dzieci mogą potrzebować pomocy nauczyciela podczas logowania i obsługi narzędzia.; Niektóre funkcje są zablokowane, gdyż wymagają one posiadania statusu premium, który jest płatny; Problemy techniczne. Brak pogłębionej dyskusji. Wysoki poziom stresu i rywalizacja. Czasochłonność przygotowania.",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Powtórki materiału"
+            ],
+            "Funkcje ": [
+                "Personalizacja poziomu trudności"
+            ],
+            "Grupa docelowa": [
+                "Dla wszystkich grup wiekowych"
+            ],
+            "Koszt użytkowania": [
+                "Freemium (niektóre opcje są bezpłatne, inne wymagają opłaty)"
+            ],
+            "Wymagane jest logowanie": [
+                "tworzenie tak, oglądanie nie"
+            ],
+            "Ocena ogólna": [
+                "4"
+            ],
+            "Obsługiwana platforma": [
+                "przeglądarka internetowa"
+            ],
+            "Typ interakcji": [
+                "Ograniczona interaktywność (dozwolone są tylko określone działania)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Duże czcionki"
+            ],
+            "Typ zastosowań": [
+                "Wielofunkcyjne (przeznaczone do różnych zastosowań lub łączące kilka obszarów edukacyjnych)"
+            ],
+            "Język": [
+                "wielojęzyczny"
+            ]
+        }
+    },
+    {
+        "id": 42,
+        "name": "Khan Academy ",
+        "link": "https://www.khanacademy.org/",
+        "desc": "Khan Academy – Khan Academy to darmowa platforma edukacyjna oferująca kursy, lekcje wideo i ćwiczenia z różnych przedmiotów dla uczniów na każdym poziomie.",
+        "pros": "Wykorzystanie Khan Academy w pracy nauczyciela niesie ze sobą szereg kluczowych korzyści, z których najważniejszą jest automatyzacja oceniania, dzięki której system samodzielnie sprawdza zadania domowe i testy, oszczędzając czas pedagoga. Narzędzie to pozwala na pełną indywidualizację nauczania, umożliwiając przypisanie zróżnicowanych zadań poszczególnym uczniom w ramach jednej klasy, co sprzyja pracy z grupami o różnym poziomie zaawansowania. Nauczyciele mają dostęp do zaawansowanej analityki, czyli precyzyjnych raportów wskazujących konkretne tematy, z którymi dany uczeń ma trudności. Całość opiera się na wysokiej jakości merytorycznej treści tworzonych przez ekspertów i zgodnych ze standardami edukacyjnymi, a ogromnym atutem jest całkowita darmowość platformy oraz brak rozpraszających reklam.",
+        "cons": "Mimo licznych zalet, korzystanie z Khan Academy w edukacji wiąże się z pewnymi wyzwaniami, wśród których kluczowa jest zależność od technologii, ponieważ efektywna praca wymaga stabilnego łącza internetowego oraz dostępu do sprawnego sprzętu dla każdego ucznia. Nauczyciele mogą również odczuwać brak możliwości edycji treści, co oznacza, że nie mogą modyfikować gotowych zadań stworzonych przez platformę, aby lepiej dopasować je do specyfiki swojej lekcji. Dodatkowo istnieje ryzyko mechanicznego rozwiązywania zadań, polegające na tym, że uczniowie, chcąc szybko zdobyć punkty i awatary, mogą próbować „zgadywać” odpowiedzi metodą prób i błędów, zamiast skupić się na głębokim zrozumieniu procesu i nauce na błędach.",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Powtórki materiału"
+            ],
+            "Funkcje ": [
+                "Personalizacja poziomu trudności"
+            ],
+            "Grupa docelowa": [
+                "Dla wszystkich grup wiekowych"
+            ],
+            "Koszt użytkowania": [
+                "Bezpłatnie"
+            ],
+            "Wymagane jest logowanie": [
+                "tak"
+            ],
+            "Ocena ogólna": [
+                "5"
+            ],
+            "Obsługiwana platforma": [
+                "tablet - Android"
+            ],
+            "Typ interakcji": [
+                "Interaktywna (dziecko ma wpływ na działanie aplikacji)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Regulacja trudności"
+            ],
+            "Typ zastosowań": [
+                "Wielofunkcyjne (przeznaczone do różnych zastosowań lub łączące kilka obszarów edukacyjnych)"
+            ],
+            "Język": [
+                "wielojęzyczny"
+            ]
+        }
+    },
+    {
+        "id": 43,
+        "name": "Khanmigo",
+        "link": "https://www.khanacademy.org/",
+        "desc": "Khanmigo – Khanmigo to asystent oparty na sztucznej inteligencji, który wspiera uczniów w nauce i pomaga nauczycielom w tworzeniu materiałów dydaktycznych.",
+        "pros": "Pomaga w nauce matematyki, programowania i jeżyków obcych, ma też pytania naprowadzające.",
+        "cons": "Najlepiej działa w języku angielskim, część funkcji jest płatna, AI- możliwe błędy.",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Powtórki materiału"
+            ],
+            "Funkcje ": [
+                "Personalizacja poziomu trudności"
+            ],
+            "Grupa docelowa": [
+                "Dla nauczycieli"
+            ],
+            "Koszt użytkowania": [
+                "Freemium (niektóre opcje są bezpłatne, inne wymagają opłaty)"
+            ],
+            "Wymagane jest logowanie": [
+                "tak"
+            ],
+            "Ocena ogólna": [
+                "4"
+            ],
+            "Obsługiwana platforma": [
+                "przeglądarka internetowa"
+            ],
+            "Typ interakcji": [
+                "Interaktywna (dziecko ma wpływ na działanie aplikacji)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Duże czcionki"
+            ],
+            "Typ zastosowań": [
+                "Gry edukacyjne"
+            ],
+            "Język": [
+                "angielski"
+            ]
+        }
+    },
+    {
+        "id": 44,
+        "name": "Kiddoworksheets",
+        "link": "https://www.kiddoworksheets.com/",
+        "desc": "Kiddoworksheets – Kiddoworksheets to platforma z gotowymi kartami pracy i ćwiczeniami dla dzieci, które można łatwo wykorzystać w nauczaniu.",
+        "pros": "To ogromna i wygodna baza gotowych do druku kart pracy z różnych dziedzin. Nie trzeba zakładać konta.",
+        "cons": "Jest dużo reklam. Nie ma języka polskiego.",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Zadanie domowe"
+            ],
+            "Funkcje ": [
+                "Gotowe ćwiczenia"
+            ],
+            "Grupa docelowa": [
+                "Dla nauczycieli"
+            ],
+            "Koszt użytkowania": [
+                "Bezpłatnie"
+            ],
+            "Wymagane jest logowanie": [
+                "nie"
+            ],
+            "Ocena ogólna": [
+                "5"
+            ],
+            "Obsługiwana platforma": [
+                "przeglądarka internetowa"
+            ],
+            "Typ interakcji": [
+                "Pasywna (tylko przeglądanie treści)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Nie posiada takich funkcji"
+            ],
+            "Typ zastosowań": [
+                "Narzędzia do projektowania pomocy dydaktycznych"
+            ],
+            "Język": [
+                "angielski"
+            ]
+        }
+    },
+    {
+        "id": 45,
+        "name": "Kubusiowi Przyjaciele Natury",
+        "link": "https://kubus.pl/gry-i-zabawy-online/#eko",
+        "desc": "Kubusiowi Przyjaciele Natury – program edukacyjny uczący dzieci ekologii i dbania o środowisko poprzez materiały interaktywne i zabawy edukacyjne.",
+        "pros": "Duży wybór bezpiecznych gier, w które dzieci mogą grać np. na informatyce i poćwiczyć umiejętności przyrodnicze",
+        "cons": "Posiada to gry tylko na określony temat, więc trudno wykorzystać tą stronę więcej razy",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Praca indywidualna"
+            ],
+            "Funkcje ": [
+                "Gotowe ćwiczenia"
+            ],
+            "Grupa docelowa": [
+                "Dla wszystkich grup wiekowych"
+            ],
+            "Koszt użytkowania": [
+                "Bezpłatnie"
+            ],
+            "Wymagane jest logowanie": [
+                "nie"
+            ],
+            "Ocena ogólna": [
+                "3"
+            ],
+            "Obsługiwana platforma": [
+                "przeglądarka internetowa"
+            ],
+            "Typ interakcji": [
+                "Interaktywna (dziecko ma wpływ na działanie aplikacji)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Nie posiada takich funkcji"
+            ],
+            "Typ zastosowań": [
+                "Edukacja przyrodnicza"
+            ],
+            "Język": [
+                "polski"
+            ]
+        }
+    },
+    {
+        "id": 46,
+        "name": "Lingokids",
+        "link": "https://lingokids.com/promo-2?utm_source=google&utm_medium=cpc&utm_campaign=wua_gsea_desktop_t2_en_brand&utm_content=wua_gsea_desktop_t2_en_brand_exact&gad_source=1&gad_campaignid=19101185274&gbraid=0AAAAACv7RkHClhuSyoC188XdA1Nfx23kY&gclid=EAIaIQobChMImdqymsezlAMVD5mDBx13qy8GEAAYASAAEgK1MPD_BwE",
+        "desc": "Lingokids – Lingokids to aplikacja do nauki języka angielskiego dla dzieci, która wykorzystuje gry, piosenki i interaktywne aktywności.",
+        "pros": "Bezpieczeństwo (brak reklam i czatów). Wysoka jakość (partnerstwo z Oxford i NASA). Wszechstronność (angielski, matematyka, przyroda, emocje). Atrakcyjność (gry, piosenki, animacje). Automatyczna adaptacja poziomu trudności. Darmowe materiały do druku (PDF). Wsparcie dla uczniów z ASD i ADHD.",
+        "cons": "Restrykcyjna wersja darmowa (3 gry na dobę). Wysoka cena subskrypcji. Brak języka polskiego (pełna immersja). Brak wersji na komputer (tylko mobile). Brak możliwości tworzenia własnych zadań. Brak komunikatora nauczyciel-rodzic.",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Powtórki materiału"
+            ],
+            "Funkcje ": [
+                "Integracja z innymi platformami"
+            ],
+            "Grupa docelowa": [
+                "6-7 lat"
+            ],
+            "Koszt użytkowania": [
+                "Bezpłatnie"
+            ],
+            "Wymagane jest logowanie": [
+                "tak"
+            ],
+            "Ocena ogólna": [
+                "5"
+            ],
+            "Obsługiwana platforma": [
+                "tablet - Android"
+            ],
+            "Typ interakcji": [
+                "Interaktywna (dziecko ma wpływ na działanie aplikacji)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Regulacja trudności"
+            ],
+            "Typ zastosowań": [
+                "Rozwijanie umiejętności matematycznych"
+            ],
+            "Język": [
+                "wielojęzyczny"
+            ]
+        }
+    },
+    {
+        "id": 47,
+        "name": "MathTug",
+        "link": "https://www.mathtug.com/en/",
+        "desc": "MathTug – MathTug to narzędzie oferujące gry i zadania matematyczne, które pomagają dzieciom w nauce podstaw matematyki w formie zabawy.",
+        "pros": "Aplikacja jest kompletnie darmowa, bez logowania i zawiera gotowe gry matematyczne, które są podzielone na proponowane grupy wiekowe. Możliwy jest tryb jednoosobowy jak i z przeciwnikiem. Jest wspierany na urządzeniach mobilnych.",
+        "cons": "Nie ma polskiej wersji językowej",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Praca grupowa"
+            ],
+            "Funkcje ": [
+                "Personalizacja poziomu trudności"
+            ],
+            "Grupa docelowa": [
+                "Dla wszystkich grup wiekowych"
+            ],
+            "Koszt użytkowania": [
+                "Bezpłatnie"
+            ],
+            "Wymagane jest logowanie": [
+                "nie"
+            ],
+            "Ocena ogólna": [
+                "5"
+            ],
+            "Obsługiwana platforma": [
+                "przeglądarka internetowa"
+            ],
+            "Typ interakcji": [
+                "Interaktywna (dziecko ma wpływ na działanie aplikacji)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Regulacja trudności"
+            ],
+            "Typ zastosowań": [
+                "Rozwijanie umiejętności matematycznych"
+            ],
+            "Język": [
+                "wielojęzyczny"
+            ]
+        }
+    },
+    {
+        "id": 48,
+        "name": "Matzoo",
+        "link": "https://matzoo.pl/",
+        "desc": "Matzoo – Matzoo to platforma z ćwiczeniami i grami matematycznymi, wspierająca naukę matematyki w szkole podstawowej.",
+        "pros": "Aplikacja posiada różnorodne ćwiczenia matematyczne dla dzieci w różnym wieku. Strona jest bardzo łatwa w obsłudze.; Przystępna dla uczniów forma ćwiczenia działań matematycznych; duży wybór tematyczny, odpowiedz dzieci dostają od razu",
+        "cons": "Brak zapisania postepów; Nie można edytować ćwiczeń ani tworzyć własnych.; na stronie internetowej są widoczne wszędzie reklamy",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Powtórki materiału"
+            ],
+            "Funkcje ": [
+                "Automatyczna informacja zwrotna"
+            ],
+            "Grupa docelowa": [
+                "8 i starsze"
+            ],
+            "Koszt użytkowania": [
+                "Bezpłatnie"
+            ],
+            "Wymagane jest logowanie": [
+                "nie"
+            ],
+            "Ocena ogólna": [
+                "4"
+            ],
+            "Obsługiwana platforma": [
+                "przeglądarka internetowa"
+            ],
+            "Typ interakcji": [
+                "Ograniczona interaktywność (dozwolone są tylko określone działania)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Nie posiada takich funkcji"
+            ],
+            "Typ zastosowań": [
+                "Rozwijanie umiejętności matematycznych"
+            ],
+            "Język": [
+                "polski"
+            ]
+        }
+    },
+    {
+        "id": 51,
+        "name": "Mentimeter",
+        "link": "https://www.mentimeter.com/\n\n",
+        "desc": "Mentimeter – Mentimeter umożliwia tworzenie interaktywnych prezentacji, ankiet i quizów, w których uczniowie mogą aktywnie uczestniczyć.",
+        "pros": "1. dobrze angażuje uczniów\n2. Dzięki możliwej anonimowości uczniowie są bardziej chętni do działania\n3. łatwa obsluga",
+        "cons": "\n\n3. może zacierać granicę między czasem prywatnym a pracą u nauczyciela \n4. w niektórych przypadkach wymagana subskrypcja, do możliwości ciekawego i regularnego korzystania\n",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Powtórki materiału"
+            ],
+            "Funkcje ": [
+                "Automatyczna informacja zwrotna"
+            ],
+            "Grupa docelowa": [
+                "6-7 lat"
+            ],
+            "Koszt użytkowania": [
+                "Bezpłatnie"
+            ],
+            "Wymagane jest logowanie": [
+                "tak"
+            ],
+            "Ocena ogólna": [
+                "4"
+            ],
+            "Obsługiwana platforma": [
+                "przeglądarka internetowa"
+            ],
+            "Typ interakcji": [
+                "Ograniczona interaktywność (dozwolone są tylko określone działania)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Duże czcionki"
+            ],
+            "Typ zastosowań": [
+                "Rozwijanie kreatywności / twórczości"
+            ],
+            "Język": [
+                "angielski"
+            ]
+        }
+    },
+    {
+        "id": 52,
+        "name": "Mysia Encyklopedia ( Little Mouse's Encyclopedia)",
+        "link": "https://circusatos.itch.io/littlemousesencyclopedia",
+        "desc": "Mysia Encyklopedia (Little Mouse’s Encyclopedia) – edukacyjna encyklopedia dla dzieci, która w prosty i ilustracyjny sposób wyjaśnia różne zagadnienia świata.",
+        "pros": "Estetyczna grafika, merytoryczne opisy gatunków dostosowane do percepcji dziecka",
+        "cons": "Płatna aplikacja",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Praca indywidualna"
+            ],
+            "Funkcje ": [
+                "Interaktywne plansze, gotowe opisy gatunków"
+            ],
+            "Grupa docelowa": [
+                "6-7 lat"
+            ],
+            "Koszt użytkowania": [
+                "Zakup jednorazowy"
+            ],
+            "Wymagane jest logowanie": [
+                "nie"
+            ],
+            "Ocena ogólna": [
+                "4"
+            ],
+            "Obsługiwana platforma": [
+                "komputer - Mac OS"
+            ],
+            "Typ interakcji": [
+                "Interaktywna (dziecko ma wpływ na działanie aplikacji)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Brak przebodźcowania ( brak agresywnych dzwięków i szybkich animacji)"
+            ],
+            "Typ zastosowań": [
+                "Rozwijanie kreatywności / twórczości"
+            ],
+            "Język": [
+                "wielojęzyczny"
+            ]
+        }
+    },
+    {
+        "id": 53,
+        "name": "Nearpod",
+        "link": "https://nearpod.com/",
+        "desc": "Nearpod – Nearpod to platforma do tworzenia interaktywnych lekcji z quizami, materiałami multimedialnymi i aktywnościami dla uczniów.",
+        "pros": "- angażuje uczniów\n- łatwa kontrola pracy dzieci\n- dużo gotowych materiałów; Nearpod to narzędzie, które bardzo ułatwia pracę nauczyciela, ponieważ pozwala tworzyć interaktywne lekcje z quizami, filmami i zadaniami, dzięki czemu uczniowie są bardziej zaangażowani i aktywni. Nauczyciel widzi odpowiedzi uczniów na bieżąco, może szybko sprawdzać postępy i od razu reagować na trudności. Dużą zaletą jest też możliwość korzystania z gotowych materiałów oraz łatwego tworzenia własnych lekcji dopasowanych do klasy. Nearpod sprawdza się zarówno w nauczaniu stacjonarnym, jak i zdalnym, a dodatkowo daje uczniom natychmiastową informację zwrotną, co wspiera efektywną naukę.; Nearpod umożliwia tworzenie atrakcyjnych i interaktywnych lekcji z wykorzystaniem multimediów, quizów oraz gier edukacyjnych. Aplikacja angażuje uczniów do aktywnego udziału w zajęciach, wspiera nauczanie stacjonarne i zdalne oraz pozwala nauczycielowi monitorować postępy uczniów na bieżąco.; Umozliwia prowadzenie interaktywnych lekcji, angażuje uczniów poprzez quizy i zadania na zywo, pozwala monitorowac aktywność uczniów.",
+        "cons": "- część opcji płatna\n- wymaga urządeń dla uczniów; Aplikacja wymaga dostępu do Internetu oraz urządzeń elektronicznych. Część funkcji dostępna jest tylko w wersji płatnej. Obsługa platformy może być początkowo trudniejsza dla nauczycieli, którzy wcześniej nie korzystali z podobnych narzędzi.; Nearpod ma też kilka wad w pracy nauczyciela. Przede wszystkim wymaga stałego dostępu do internetu, więc nie sprawdzi się w trybie offline. Część bardziej zaawansowanych funkcji jest dostępna tylko w płatnej wersji, co może ograniczać możliwości szkół. Przygotowanie interaktywnych lekcji może też zająć więcej czasu niż tradycyjnych materiałów, szczególnie na początku.; Wiele funkcji w wersji płatnej, poczatkowo może być trudna w obsłudze.",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Powtórki materiału"
+            ],
+            "Funkcje ": [
+                "Personalizacja poziomu trudności"
+            ],
+            "Grupa docelowa": [
+                "Dla nauczycieli"
+            ],
+            "Koszt użytkowania": [
+                "Subskrypcja (opłata cykliczna)"
+            ],
+            "Wymagane jest logowanie": [
+                "tak"
+            ],
+            "Ocena ogólna": [
+                "5"
+            ],
+            "Obsługiwana platforma": [
+                "komputer - Mac OS"
+            ],
+            "Typ interakcji": [
+                "Interaktywna (dziecko ma wpływ na działanie aplikacji)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Regulacja trudności"
+            ],
+            "Typ zastosowań": [
+                "Wielofunkcyjne (przeznaczone do różnych zastosowań lub łączące kilka obszarów edukacyjnych)"
+            ],
+            "Język": [
+                "wielojęzyczny"
+            ]
+        }
+    },
+    {
+        "id": 56,
+        "name": "nearpod",
+        "link": "https://nearpod.com/",
+        "desc": "Nearpod – Nearpod to platforma do tworzenia interaktywnych lekcji z quizami, materiałami multimedialnymi i aktywnościami dla uczniów.",
+        "pros": "dwa tryby pracy, (na żywo i we własnym tempie) ",
+        "cons": "instrukcja w języku angielskim przy tworzeniu (możliwe, że nie rozpracowałam zmiany języka, ale próbowałam)",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Powtórki materiału"
+            ],
+            "Funkcje ": [
+                "Obsługa multimediów"
+            ],
+            "Grupa docelowa": [
+                "Dla nauczycieli"
+            ],
+            "Koszt użytkowania": [
+                "Bezpłatnie"
+            ],
+            "Wymagane jest logowanie": [
+                "tak"
+            ],
+            "Ocena ogólna": [
+                "5"
+            ],
+            "Obsługiwana platforma": [
+                "przeglądarka internetowa"
+            ],
+            "Typ interakcji": [
+                "Interaktywna (dziecko ma wpływ na działanie aplikacji)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Duże czcionki"
+            ],
+            "Typ zastosowań": [
+                "Wielofunkcyjne (przeznaczone do różnych zastosowań lub łączące kilka obszarów edukacyjnych)"
+            ],
+            "Język": [
+                "wielojęzyczny"
+            ]
+        }
+    },
+    {
+        "id": 58,
+        "name": "Nearpod ",
+        "link": "https://nearpod.com/",
+        "desc": "Nearpod – Nearpod to platforma do tworzenia interaktywnych lekcji z quizami, materiałami multimedialnymi i aktywnościami dla uczniów.",
+        "pros": "zwiększa zaangażowanie uczniów, wspiera naukę poprzez zabawę, umożliwia szybkie sprawdzenie wiedzy ",
+        "cons": "wymaga stałego dostępu do internetu. część funkcji dostępna jest tylko w wersji premium",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Powtórki materiału"
+            ],
+            "Funkcje ": [
+                "Obsługa multimediów"
+            ],
+            "Grupa docelowa": [
+                "Dla wszystkich grup wiekowych"
+            ],
+            "Koszt użytkowania": [
+                "Freemium (niektóre opcje są bezpłatne, inne wymagają opłaty)"
+            ],
+            "Wymagane jest logowanie": [
+                "tak"
+            ],
+            "Ocena ogólna": [
+                "4"
+            ],
+            "Obsługiwana platforma": [
+                "tablet - iPad OS / iOS"
+            ],
+            "Typ interakcji": [
+                "Interaktywna (dziecko ma wpływ na działanie aplikacji)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Synteza mowy"
+            ],
+            "Typ zastosowań": [
+                "Wielofunkcyjne (przeznaczone do różnych zastosowań lub łączące kilka obszarów edukacyjnych)"
+            ],
+            "Język": [
+                "wielojęzyczny"
+            ]
+        }
+    },
+    {
+        "id": 59,
+        "name": "Puzzel.org",
+        "link": "https://puzzel.org/pl",
+        "desc": "Puzzel.org – Puzzel.org umożliwia tworzenie interaktywnych puzzli i gier edukacyjnych, które można wykorzystać w nauczaniu.",
+        "pros": "Puzzel.org to proste narzędzie dla nauczycieli do tworzenia interaktywnych ćwiczeń online, takich jak quizy, krzyżówki czy memory. Działa w przeglądarce i nie wymaga instalacji ani zaawansowanej wiedzy. Ułatwia szybkie przygotowanie lekcji i sprawia, że uczniowie są bardziej zaangażowani dzięki elementom gry. Nauczyciel może łatwo udostępnić zadania linkiem lub QR kodem, a uczniowie od razu widzą wyniki i poprawność odpowiedzi.",
+        "cons": "Nie posiada rozbudowanych funkcji dostępności dla uczniów ze specjalnymi potrzebami (np. syntezy mowy czy trybu wysokiego kontrastu). Wymaga stałego dostępu do internetu i nie działa offline. Nie jest też pełnym systemem do zarządzania klasą, więc ma ograniczone możliwości monitorowania postępów uczniów. Część bardziej zaawansowanych funkcji jest dostępna tylko w płatnej wersji. Dodatkowo, interfejs tworzenia materiałów może być mniej intuicyjny dla osób początkujących w pierwszym kontakcie.",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Powtórki materiału"
+            ],
+            "Funkcje ": [
+                "Gotowe ćwiczenia"
+            ],
+            "Grupa docelowa": [
+                "Dla nauczycieli"
+            ],
+            "Koszt użytkowania": [
+                "Freemium (niektóre opcje są bezpłatne, inne wymagają opłaty)"
+            ],
+            "Wymagane jest logowanie": [
+                "tworzenie tak, oglądanie nie"
+            ],
+            "Ocena ogólna": [
+                "4"
+            ],
+            "Obsługiwana platforma": [
+                "przeglądarka internetowa"
+            ],
+            "Typ interakcji": [
+                "Interaktywna (dziecko ma wpływ na działanie aplikacji)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Regulacja trudności"
+            ],
+            "Typ zastosowań": [
+                "Narzędzia do projektowania pomocy dydaktycznych"
+            ],
+            "Język": [
+                "wielojęzyczny"
+            ]
+        }
+    },
+    {
+        "id": 60,
+        "name": "QuiverVision",
+        "link": "https://quivervision.com/",
+        "desc": "QuiverVision – QuiverVision to aplikacja AR, która ożywia kolorowanki i zamienia je w trójwymiarowe animacje.",
+        "pros": "- Łączenie świata realnego (kolorowanka w formie papierowej) ze światem cyfrowym poprzez stworzenie modelu 3D\n- Wysoka wartość wizualna\n- Uczeń może wchodzić w interakcję z modelem 3D\n- Aplikacja ma w swoich zasobach pakiety tematyczne, które pozwalają na interaktywne sprawdzanie skomplikowanych zagadnień",
+        "cons": "- Najciekawsze arkusze edukacyjne są płatne\n- Okres próbny w aplikacji trwa jedynie 7 dni\n- Wymaga posiadania urządzenia mobilnego z dobrą kamerą, aby móc zeskanować obrazek",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Praca grupowa"
+            ],
+            "Funkcje ": [
+                "Gotowe ćwiczenia"
+            ],
+            "Grupa docelowa": [
+                "Dla wszystkich grup wiekowych"
+            ],
+            "Koszt użytkowania": [
+                "Freemium (niektóre opcje są bezpłatne, inne wymagają opłaty)"
+            ],
+            "Wymagane jest logowanie": [
+                "tworzenie tak, oglądanie nie"
+            ],
+            "Ocena ogólna": [
+                "4"
+            ],
+            "Obsługiwana platforma": [
+                "tablet - Android"
+            ],
+            "Typ interakcji": [
+                "Interaktywna (dziecko ma wpływ na działanie aplikacji)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Angażuje sensorycznie"
+            ],
+            "Typ zastosowań": [
+                "Wielofunkcyjne (przeznaczone do różnych zastosowań lub łączące kilka obszarów edukacyjnych)"
+            ],
+            "Język": [
+                "angielski"
+            ]
+        }
+    },
+    {
+        "id": 61,
+        "name": "Quizizz",
+        "link": "https://www.thequizizz.com/login",
+        "desc": "Quizizz – Quizizz to platforma do tworzenia quizów edukacyjnych w formie gry, którą uczniowie mogą rozwiązywać na żywo lub samodzielnie.",
+        "pros": "Wykorzystanie Quizizz w pracy nauczyciela niesie ze sobą liczne korzyści, przede wszystkim stanowiąc potężną motywację dla uczniów dzięki elementom grywalizacji, które sprawiają, że chętniej angażują się oni w powtórki materiału. Narzędzie pozwala na błyskawiczną diagnozę, dając nauczycielowi wgląd w czasie rzeczywistym w to, które pytania sprawiły klasie największą trudność, co ułatwia bieżące korygowanie błędów. Dużym atutem jest znaczna oszczędność czasu możliwa dzięki funkcji importu pytań oraz dostępowi do ogromnej bazy publicznych quizów, a także różnorodność formatów, pozwalająca na tworzenie nie tylko dynamicznych testów, ale i pełnowartościowych interaktywnych lekcji opartych na slajdach.; motywuje uczniów do nauki, ułatwia sprawdzanie wiedzy",
+        "cons": "Z drugiej strony, wady tego rozwiązania obejmują istotne ograniczenia wersji darmowej, przez co wiele zaawansowanych funkcji, takich jak pytania otwarte z nagraniami audio, znajduje się za tzw. „paywallem”. Poważnym wyzwaniem mogą być również rozpraszacze wewnątrz aplikacji – uczniowie czasem nadmiernie skupiają się na zdobywaniu „power-upów” i śledzeniu tabeli wyników kosztem głębokiej analizy treści edukacyjnej. Dodatkowo, w przypadku gier prowadzonych na żywo, nauczyciel musi liczyć się z ryzykiem powstania chaosu w klasie, gdyż wysoki poziom emocji i rywalizacji bywa trudny do opanowania w tradycyjnych warunkach lekcyjnych.; część materiałów i funkcji jest płatna, wymaga połączenia z internetem",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Powtórki materiału"
+            ],
+            "Funkcje ": [
+                "Automatyczna informacja zwrotna"
+            ],
+            "Grupa docelowa": [
+                "Dla wszystkich grup wiekowych"
+            ],
+            "Koszt użytkowania": [
+                "Freemium (niektóre opcje są bezpłatne, inne wymagają opłaty)"
+            ],
+            "Wymagane jest logowanie": [
+                "tak"
+            ],
+            "Ocena ogólna": [
+                "4"
+            ],
+            "Obsługiwana platforma": [
+                "komputer - Mac OS"
+            ],
+            "Typ interakcji": [
+                "Ograniczona interaktywność (dozwolone są tylko określone działania)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Duże czcionki"
+            ],
+            "Typ zastosowań": [
+                "Wielofunkcyjne (przeznaczone do różnych zastosowań lub łączące kilka obszarów edukacyjnych)"
+            ],
+            "Język": [
+                "wielojęzyczny"
+            ]
+        }
+    },
+    {
+        "id": 62,
+        "name": "Quizlet",
+        "link": "https://quizlet.com/pl",
+        "desc": "Quizlet – Quizlet to narzędzie do nauki poprzez fiszki, testy i gry, które pomaga w zapamiętywaniu informacji.",
+        "pros": "Szybkie tworzenie fiszek i quizów, szeroka baza gotowych materiałów dydaktycznych, atrakcyjna forma, prosta w obsłudze zarówno podczas wykonywania ćwiczeń, jak i tworzenia materiałów.; Łatwe przygotowanie materiałów dla uczniów.\nZarządzanie zespołem klasy i obserwacja postępów.\nIntuicyjna w użytkowaniu.\nRóżne tryby nauki.; łatwe tworzenie fiszek\nszybkie powtórki materiału\natrakcyjna forma nauki\nmożliwość nauki na telefonie\ngotowe zestawy od innych użytkowników\nwspiera zapamiętywanie słownictwa\nmożliwość pracy indywidualnej i grupowej\ngry i quizy zwiększające motywację",
+        "cons": "Część funkcji dostępna jest tylko w wersji płatnej, niektóre gotowe materiały mogą zawierać błędy.; Niektóre funkcje wymagają opcji premium.; ograniczone rozwijanie mówienia\nczęść funkcji jest płatna\nuczniowie mogą uczyć się mechanicznie\nwymaga dostępu do internetu\nłatwo się rozpraszać aplikacją\nnie zastępuje pracy nauczyciela\ngotowe zestawy mogą zawierać błędy\nmniejszy nacisk na komunikację praktyczną",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Powtórki materiału"
+            ],
+            "Funkcje ": [
+                "Personalizacja poziomu trudności"
+            ],
+            "Grupa docelowa": [
+                "Dla wszystkich grup wiekowych"
+            ],
+            "Koszt użytkowania": [
+                "Freemium (niektóre opcje są bezpłatne, inne wymagają opłaty)"
+            ],
+            "Wymagane jest logowanie": [
+                "tak"
+            ],
+            "Ocena ogólna": [
+                "4"
+            ],
+            "Obsługiwana platforma": [
+                "tablet - iPad OS / iOS"
+            ],
+            "Typ interakcji": [
+                "Interaktywna (dziecko ma wpływ na działanie aplikacji)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Nauka we własnym tempie"
+            ],
+            "Typ zastosowań": [
+                "Wielofunkcyjne (przeznaczone do różnych zastosowań lub łączące kilka obszarów edukacyjnych)"
+            ],
+            "Język": [
+                "wielojęzyczny"
+            ]
+        }
+    },
+    {
+        "id": 66,
+        "name": "Rebusy.edu.pl ( Generator rebusów)",
+        "link": "https://www.rebusy.edu.pl/",
+        "desc": "Rebusy.edu.pl – Rebusy.edu.pl to generator rebusów edukacyjnych, który wspiera naukę poprzez zagadki i zabawę słowem.",
+        "pros": "Prosta obsługa, Baza obrazków jest bogata i estetyczna, szybkie działanie i intuicyjne działanie ",
+        "cons": "Brak możliwości wgrywania własnych grafik, stabilne łącze internetowe ",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Zajęcia wyrównawcze"
+            ],
+            "Funkcje ": [
+                "Integracja z innymi platformami"
+            ],
+            "Grupa docelowa": [
+                "8 i starsze"
+            ],
+            "Koszt użytkowania": [
+                "Bezpłatnie"
+            ],
+            "Wymagane jest logowanie": [
+                "nie"
+            ],
+            "Ocena ogólna": [
+                "5"
+            ],
+            "Obsługiwana platforma": [
+                "przeglądarka internetowa"
+            ],
+            "Typ interakcji": [
+                "Interaktywna (dziecko ma wpływ na działanie aplikacji)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Wysoki kontrast"
+            ],
+            "Typ zastosowań": [
+                "Wielofunkcyjne (przeznaczone do różnych zastosowań lub łączące kilka obszarów edukacyjnych)"
+            ],
+            "Język": [
+                "angielski"
+            ]
+        }
+    },
+    {
+        "id": 67,
+        "name": "Rozwój dziecka",
+        "link": "https://childdevelop.pl/",
+        "desc": "Rozwój dziecka – platforma oferująca materiały i ćwiczenia wspierające rozwój poznawczy, emocjonalny i edukacyjny dzieci.",
+        "pros": "Strona oferuje zadania zadania praktyczne, generatory zadań, dyplomy dla dzieci, opis eksperymentów i zadań twórczych, artykuły tematyczne, programy szkoleniowe.\nJest przejrzysta.",
+        "cons": "Trzeba się zalogować, są również limity i trzeba potem wykupić opcję premium.",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Zadanie domowe"
+            ],
+            "Funkcje ": [
+                "Gotowe ćwiczenia"
+            ],
+            "Grupa docelowa": [
+                "Dla nauczycieli"
+            ],
+            "Koszt użytkowania": [
+                "Freemium (niektóre opcje są bezpłatne, inne wymagają opłaty)"
+            ],
+            "Wymagane jest logowanie": [
+                "tak"
+            ],
+            "Ocena ogólna": [
+                "5"
+            ],
+            "Obsługiwana platforma": [
+                "przeglądarka internetowa"
+            ],
+            "Typ interakcji": [
+                "Ograniczona interaktywność (dozwolone są tylko określone działania)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Nie posiada takich funkcji"
+            ],
+            "Typ zastosowań": [
+                "Wielofunkcyjne (przeznaczone do różnych zastosowań lub łączące kilka obszarów edukacyjnych)"
+            ],
+            "Język": [
+                "polski"
+            ]
+        }
+    },
+    {
+        "id": 68,
+        "name": "Scholaris",
+        "link": "https://zpe.gov.pl/scholaris",
+        "desc": "Scholaris – Scholaris to polska baza materiałów edukacyjnych dla nauczycieli, zawierająca scenariusze lekcji i ćwiczenia.",
+        "pros": "Scholaris daje nauczycielowi dostęp do dużej bazy gotowych, darmowych materiałów dydaktycznych zgodnych z podstawą programową, takich jak scenariusze lekcji, prezentacje, filmy i karty pracy. Dzięki temu przygotowanie zajęć jest szybsze i łatwiejsze, bo nie trzeba tworzyć wszystkiego od zera. Nauczyciel może łatwo wyszukiwać materiały według przedmiotu i poziomu klasy oraz dopasowywać je do potrzeb uczniów, np. na powtórki lub zajęcia wyrównawcze. Platforma sprawdza się też jako wsparcie podczas lekcji stacjonarnych i zdalnych, ponieważ dostarcza gotowe treści do wykorzystania w różnych formach nauczania.",
+        "cons": "Scholaris ma ograniczoną interaktywność, ponieważ działa głównie jako baza materiałów do przeglądania, a nie platforma do tworzenia ćwiczeń czy gier dla uczniów. Nie umożliwia monitorowania postępów uczniów ani udzielania automatycznej informacji zwrotnej, co utrudnia bieżącą ocenę pracy klasy. Brakuje też elementów grywalizacji, które mogłyby zwiększać zaangażowanie uczniów. Dodatkowo nauczyciel nie ma dużych możliwości personalizacji ani tworzenia własnych interaktywnych treści w systemie, więc jest zależny od gotowych materiałów.",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Powtórki materiału"
+            ],
+            "Funkcje ": [
+                "Personalizacja poziomu trudności"
+            ],
+            "Grupa docelowa": [
+                "6-7 lat"
+            ],
+            "Koszt użytkowania": [
+                "Bezpłatnie"
+            ],
+            "Wymagane jest logowanie": [
+                "nie"
+            ],
+            "Ocena ogólna": [
+                "4"
+            ],
+            "Obsługiwana platforma": [
+                "przeglądarka internetowa"
+            ],
+            "Typ interakcji": [
+                "Pasywna (tylko przeglądanie treści)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Nie posiada takich funkcji"
+            ],
+            "Typ zastosowań": [
+                "Wielofunkcyjne (przeznaczone do różnych zastosowań lub łączące kilka obszarów edukacyjnych)"
+            ],
+            "Język": [
+                "polski"
+            ]
+        }
+    },
+    {
+        "id": 69,
+        "name": "Seesaw",
+        "link": "https://app.seesaw.me/#/login?role=teacher",
+        "desc": "Seesaw – Seesaw to platforma, która pozwala uczniom dokumentować swoją pracę i udostępniać ją nauczycielom oraz rodzicom.",
+        "pros": "Seesaw ułatwia organizację pracy klasy i szybkie tworzenie oraz udostępnianie materiałów edukacyjnych. Wspiera indywidualizację nauczania, rozwija motywację uczniów i umożliwia tworzenie cyfrowego portfolio. Dodatkowo poprawia komunikację z rodzicami i wspiera naukę zdalną oraz rozwój kompetencji cyfrowych dzieci.",
+        "cons": "Aplikacja wymaga stałego dostępu do Internetu i urządzeń elektronicznych, co może być ograniczeniem w niektórych warunkach szkolnych. Część funkcji jest płatna, co ogranicza możliwości w wersji darmowej. Dodatkowo konieczne jest dbanie o ochronę danych uczniów, a wdrożenie narzędzia może wymagać czasu i wsparcia technicznego.",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Powtórki materiału"
+            ],
+            "Funkcje ": [
+                "Personalizacja poziomu trudności"
+            ],
+            "Grupa docelowa": [
+                "Dla nauczycieli"
+            ],
+            "Koszt użytkowania": [
+                "Dla posiadaczy licencji edukacyjnej (dla szkół)"
+            ],
+            "Wymagane jest logowanie": [
+                "tak"
+            ],
+            "Ocena ogólna": [
+                "4"
+            ],
+            "Obsługiwana platforma": [
+                "komputer - Mac OS"
+            ],
+            "Typ interakcji": [
+                "Interaktywna (dziecko ma wpływ na działanie aplikacji)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Wysoki kontrast"
+            ],
+            "Typ zastosowań": [
+                "Platforma do zarządzania klasą, motywowania uczniów i śledzenia postępów"
+            ],
+            "Język": [
+                "wielojęzyczny"
+            ]
+        }
+    },
+    {
+        "id": 70,
+        "name": "Socrative",
+        "link": "https://www.socrative.com/",
+        "desc": "Socrative – Socrative to narzędzie do szybkiego sprawdzania wiedzy uczniów poprzez quizy i ankiety.",
+        "pros": "1, szybkie sprawdzanie wiedzy\n2. automatyczne ocenianie \n3. czytelne raporty",
+        "cons": "1. mniej atrakcyjne wizualnie niż kahoot lub mentimetr\n2. ograniczona wersja darmowa\n3. skupia sie bardziej na testowaniu niz kreatywnosci",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Powtórki materiału"
+            ],
+            "Funkcje ": [
+                "Personalizacja poziomu trudności"
+            ],
+            "Grupa docelowa": [
+                "6-7 lat"
+            ],
+            "Koszt użytkowania": [
+                "Freemium (niektóre opcje są bezpłatne, inne wymagają opłaty)"
+            ],
+            "Wymagane jest logowanie": [
+                "tak"
+            ],
+            "Ocena ogólna": [
+                "4"
+            ],
+            "Obsługiwana platforma": [
+                "przeglądarka internetowa"
+            ],
+            "Typ interakcji": [
+                "Ograniczona interaktywność (dozwolone są tylko określone działania)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Regulacja trudności"
+            ],
+            "Typ zastosowań": [
+                "Wielofunkcyjne (przeznaczone do różnych zastosowań lub łączące kilka obszarów edukacyjnych)"
+            ],
+            "Język": [
+                "polski"
+            ]
+        }
+    },
+    {
+        "id": 71,
+        "name": "SpinEverything",
+        "link": "https://spineverything.com/",
+        "desc": "SpinEverything – SpinEverything to narzędzie do tworzenia losowań, quizów i „koła fortuny” wykorzystywanych w edukacji.",
+        "pros": "Możliwość sprawnego i szybkiego przygotowania interaktywnych materiałów do pracy, do powtórki materiału",
+        "cons": "Nie wszystkie funkcje są intuicyjne",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Powtórki materiału"
+            ],
+            "Funkcje ": [
+                "Personalizacja poziomu trudności"
+            ],
+            "Grupa docelowa": [
+                "Dla wszystkich grup wiekowych"
+            ],
+            "Koszt użytkowania": [
+                "Freemium (niektóre opcje są bezpłatne, inne wymagają opłaty)"
+            ],
+            "Wymagane jest logowanie": [
+                "tak"
+            ],
+            "Ocena ogólna": [
+                "4"
+            ],
+            "Obsługiwana platforma": [
+                "przeglądarka internetowa"
+            ],
+            "Typ interakcji": [
+                "Interaktywna (dziecko ma wpływ na działanie aplikacji)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Ciemny i jasny motyw"
+            ],
+            "Typ zastosowań": [
+                "Narzędzie służy również do losowania grup, osób - przydatne dla nauczyciela"
+            ],
+            "Język": [
+                "angielski"
+            ]
+        }
+    },
+    {
+        "id": 72,
+        "name": "Squla ",
+        "link": "https://www.squla.pl/",
+        "desc": "Squla – Squla to platforma edukacyjna dla dzieci, która łączy naukę z grami i quizami.",
+        "pros": "1. zgodność z podstawą programową\n2. bezpieczeństwo i brak reklam \n3. możliwość korzystania na wielu urządzeniach \n4. wysoka jakość merytoryczna ",
+        "cons": "1. koszt - abonament \n2. wymagany dostęp do internetu ",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Powtórki materiału"
+            ],
+            "Funkcje ": [
+                "Obsługa multimediów"
+            ],
+            "Grupa docelowa": [
+                "8 i starsze"
+            ],
+            "Koszt użytkowania": [
+                "Subskrypcja (opłata cykliczna)"
+            ],
+            "Wymagane jest logowanie": [
+                "tak"
+            ],
+            "Ocena ogólna": [
+                "4"
+            ],
+            "Obsługiwana platforma": [
+                "komputer - Mac OS"
+            ],
+            "Typ interakcji": [
+                "Interaktywna (dziecko ma wpływ na działanie aplikacji)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Wysoki kontrast"
+            ],
+            "Typ zastosowań": [
+                "Gry edukacyjne"
+            ],
+            "Język": [
+                "polski"
+            ]
+        }
+    },
+    {
+        "id": 73,
+        "name": "Story Quest Creator",
+        "link": "https://storyquest.app/",
+        "desc": "Story Quest Creator – Story Quest Creator umożliwia tworzenie interaktywnych historii, w których uczniowie podejmują decyzje.",
+        "pros": "Aplikacja skutecznie wspiera edukację włączającą, niwelując bariery u uczniów z dysleksją oraz dysgrafią. Narzędzie eliminuje problem „pustej kartki” dzięki interaktywnym podpowiedziom generowanym przez sztuczną inteligencję. Uczeń angażuje się emocjonalnie w proces lekcyjny, mając realny wpływ na losy tworzonych bohaterów. System automatycznie dopasowuje poziom trudności słownictwa do indywidualnych możliwości językowych każdego dziecka. Praca z interfejsem głosowym wymusza poprawną artykulację i rozwija umiejętność wyraźnego wypowiadania się. Nauczyciel zyskuje gotowy materiał dydaktyczny w postaci zilustrowanego słuchowiska, które powstaje w zaledwie kilka minut. Cyfrowe archiwum prac pozwala na wygodne monitorowanie postępów i dokumentowanie rozwoju kreatywności ucznia. Platforma w bezpieczny sposób oswaja dzieci z nowoczesnymi technologiami, łącząc naukę z atrakcyjną formą zabawy.",
+        "cons": "Użytkowanie aplikacji wymaga stałego i szybkiego połączenia z internetem do generowania treści przez AI. Wysoki koszt subskrypcji premium może stanowić barierę finansową dla części rodziców oraz placówek oświatowych. Narzędzie wykazuje ograniczoną przydatność w nauczaniu przedmiotów ścisłych, takich jak matematyka czy fizyka. Systematyczne korzystanie z urządzenia zwiększa całkowity czas spędzany przez dziecko przed ekranem tabletu lub telefonu. Automatycznie generowane ilustracje bywają powtarzalne i nie zawsze idealnie oddają abstrakcyjne pomysły uczniów. Brak pełnej integracji z popularnymi dziennikami elektronicznymi utrudnia szybkie przesyłanie ocen i raportów. Sztuczna inteligencja może czasem błędnie zinterpretować niewyraźną mowę dziecka, co prowadzi do chwilowej frustracji użytkownika. Praca w dużych grupach klasowych bywa utrudniona ze względu na wzajemne zakłócanie się komend głosowych wielu uczniów.",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Powtórki materiału"
+            ],
+            "Funkcje ": [
+                "Personalizacja poziomu trudności"
+            ],
+            "Grupa docelowa": [
+                "Dla nauczycieli"
+            ],
+            "Koszt użytkowania": [
+                "Freemium (niektóre opcje są bezpłatne, inne wymagają opłaty)"
+            ],
+            "Wymagane jest logowanie": [
+                "tak"
+            ],
+            "Ocena ogólna": [
+                "5"
+            ],
+            "Obsługiwana platforma": [
+                "tablet - iPad OS / iOS"
+            ],
+            "Typ interakcji": [
+                "Interaktywna (dziecko ma wpływ na działanie aplikacji)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Regulacja trudności"
+            ],
+            "Typ zastosowań": [
+                "Wielofunkcyjne (przeznaczone do różnych zastosowań lub łączące kilka obszarów edukacyjnych)"
+            ],
+            "Język": [
+                "wielojęzyczny"
+            ]
+        }
+    },
+    {
+        "id": 74,
+        "name": "Tapnote",
+        "link": "https://www.tapnote.app/",
+        "desc": "Tapnote – Tapnote to narzędzie do tworzenia notatek i materiałów multimedialnych, które można łatwo organizować i udostępniać.",
+        "pros": "- Szybkie przygotowanie notatek, quizz, streszczeń\n- Ułatwia powtarzanie i utrwalanie wiedzy\n- Oszczędza czas przy tworzeniu materiałów",
+        "cons": "- Wymaga internetu\n- Ograniczona kontrola podczas powstawania materiałów ",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Zajęcia wyrównawcze"
+            ],
+            "Funkcje ": [
+                "Obsługa multimediów"
+            ],
+            "Grupa docelowa": [
+                "Dla nauczycieli"
+            ],
+            "Koszt użytkowania": [
+                "Subskrypcja (opłata cykliczna)"
+            ],
+            "Wymagane jest logowanie": [
+                "tak"
+            ],
+            "Ocena ogólna": [
+                "4"
+            ],
+            "Obsługiwana platforma": [
+                "tablet - iPad OS / iOS"
+            ],
+            "Typ interakcji": [
+                "Pasywna (tylko przeglądanie treści)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Nie posiada takich funkcji"
+            ],
+            "Typ zastosowań": [
+                "Wielofunkcyjne (przeznaczone do różnych zastosowań lub łączące kilka obszarów edukacyjnych)"
+            ],
+            "Język": [
+                "polski"
+            ]
+        }
+    },
+    {
+        "id": 75,
+        "name": "Thinkrolls -Avokiddo",
+        "link": "https://www.avokiddo.com/",
+        "desc": "Thinkrolls (Avokiddo) – Thinkrolls to edukacyjna gra logiczna dla dzieci, rozwijająca myślenie i rozwiązywanie problemów.",
+        "pros": "kolorowa grafika dla młodszych dzieci,\nnauka poprzez zabawę",
+        "cons": "wymaga tabletu/ telefonu,\nczęść wersji płatne,\n",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Powtórki materiału"
+            ],
+            "Funkcje ": [
+                "Obsługa multimediów"
+            ],
+            "Grupa docelowa": [
+                "6-7 lat"
+            ],
+            "Koszt użytkowania": [
+                "Zakup jednorazowy"
+            ],
+            "Wymagane jest logowanie": [
+                "nie"
+            ],
+            "Ocena ogólna": [
+                "4"
+            ],
+            "Obsługiwana platforma": [
+                "tablet - Android"
+            ],
+            "Typ interakcji": [
+                "Ograniczona interaktywność (dozwolone są tylko określone działania)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Regulacja trudności"
+            ],
+            "Typ zastosowań": [
+                "Wielofunkcyjne (przeznaczone do różnych zastosowań lub łączące kilka obszarów edukacyjnych)"
+            ],
+            "Język": [
+                "wielojęzyczny"
+            ]
+        }
+    },
+    {
+        "id": 76,
+        "name": "Toy Theater",
+        "link": "https://toytheater.com/category/language-arts/",
+        "desc": "Toy Theater – Toy Theater to zbiór gier edukacyjnych i narzędzi matematycznych online dla dzieci.",
+        "pros": "- kolorowe i proste gry edukacyjne\n- nauka liter\n- gry logiczne\n- darmowe materiały",
+        "cons": "- język angielski\n- mniej rozbudowane funkcje nauczycielskie",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Zajęcia wyrównawcze"
+            ],
+            "Funkcje ": [
+                "Personalizacja poziomu trudności"
+            ],
+            "Grupa docelowa": [
+                "3-5 lat"
+            ],
+            "Koszt użytkowania": [
+                "Bezpłatnie"
+            ],
+            "Wymagane jest logowanie": [
+                "nie"
+            ],
+            "Ocena ogólna": [
+                "4"
+            ],
+            "Obsługiwana platforma": [
+                "przeglądarka internetowa"
+            ],
+            "Typ interakcji": [
+                "Interaktywna (dziecko ma wpływ na działanie aplikacji)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Duże czcionki"
+            ],
+            "Typ zastosowań": [
+                "Gry edukacyjne"
+            ],
+            "Język": [
+                "angielski"
+            ]
+        }
+    },
+    {
+        "id": 77,
+        "name": "Twinkl",
+        "link": "https://www.twinkl.pl/resources/polska-materialy-edukacyjne-dla-szkol-podstawowych-nauczanie-poczatkowe-klasy-i-iii/tematy-klasy-i-iii-polska/zima-tematy-klasy-i-iii-polska",
+        "desc": "Twinkl – Twinkl to ogromna biblioteka materiałów dydaktycznych, kart pracy i zasobów edukacyjnych dla nauczycieli.",
+        "pros": "Bardzo duża baza materiałów, oszczędność czasu, Różnicowanie poziomu trudności",
+        "cons": "Koszt subskrypcji, ryzyko „gotowców”, nie wszystko jest zgodne z polską podstawą programową",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Powtórki materiału"
+            ],
+            "Funkcje ": [
+                "Tworzenie własnych materiałów"
+            ],
+            "Grupa docelowa": [
+                "Dla nauczycieli"
+            ],
+            "Koszt użytkowania": [
+                "Freemium (niektóre opcje są bezpłatne, inne wymagają opłaty)"
+            ],
+            "Wymagane jest logowanie": [
+                "tak"
+            ],
+            "Ocena ogólna": [
+                "4"
+            ],
+            "Obsługiwana platforma": [
+                "przeglądarka internetowa"
+            ],
+            "Typ interakcji": [
+                "Ograniczona interaktywność (dozwolone są tylko określone działania)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Duże czcionki"
+            ],
+            "Typ zastosowań": [
+                "Wielofunkcyjne (przeznaczone do różnych zastosowań lub łączące kilka obszarów edukacyjnych)"
+            ],
+            "Język": [
+                "wielojęzyczny"
+            ]
+        }
+    },
+    {
+        "id": 78,
+        "name": "Wakelet",
+        "link": "https://wakelet.com/workspace/LWbbWfCDNjCql_D1230WG/collections ",
+        "desc": "Wakelet – Wakelet pozwala tworzyć kolekcje linków, materiałów i treści edukacyjnych w jednym miejscu.",
+        "pros": "1. efektywna organizacja materiałów\n2. łatwa współpraca - umożliwia tworzenie wspólnych kolekcji, do których uczniowie mogą dodawać materiały\n3. personalizacja nauczania - możliwość dodania dodatkowych wyjaśnień \n4. bezpieczeństwo i prywatność - pozwala na tworzenie zamkniętych grup klasowych\n5. atrakcyjna wizualnie ",
+        "cons": "1. ograniczenie darmowej wersji do kilku kolekcji \n2. ryzyko wygaśnięcia linków zewnętrznych \n3. ograniczone formatowanie tekstów ",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Praca grupowa"
+            ],
+            "Funkcje ": [
+                "Obsługa multimediów"
+            ],
+            "Grupa docelowa": [
+                "Dla wszystkich grup wiekowych"
+            ],
+            "Koszt użytkowania": [
+                "Bezpłatnie"
+            ],
+            "Wymagane jest logowanie": [
+                "tak"
+            ],
+            "Ocena ogólna": [
+                "5"
+            ],
+            "Obsługiwana platforma": [
+                "przeglądarka internetowa"
+            ],
+            "Typ interakcji": [
+                "Pasywna (tylko przeglądanie treści)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "przejrzystość"
+            ],
+            "Typ zastosowań": [
+                "Pozwala porządkować rozsypane po internecie materiały w tematyczne kolekcje."
+            ],
+            "Język": [
+                "wielojęzyczny"
+            ]
+        }
+    },
+    {
+        "id": 79,
+        "name": "Wolnelekury.pl",
+        "link": "https://wolnelektury.pl/?gad_source=1&gad_campaignid=11893354452&gbraid=0AAAAADrPR06fP1m6CIOE_ttpAIUbMbGs1&gclid=EAIaIQobChMIsM6I_MOzlAMVVBQGAB3iuAqwEAAYASAAEgJdm_D_BwE",
+        "desc": "WolneLektury.pl – WolneLektury to darmowa biblioteka lektur szkolnych i klasycznych dzieł literatury online.",
+        "pros": "Darmowy i legalny dostęp. Wielość formatów (PDF, EPUB, MOBI, Audio). Wyszukiwarka motywów literackich. Profesjonalne opracowania i przypisy. Brak konieczności logowania. Wsparcie dla uczniów ze specjalnymi potrzebami (SPE).",
+        "cons": "Brak współczesnej literatury (prawa autorskie). Ryzyko rozpraszania się uczniów na urządzeniach cyfrowych. Brak kontaktu z tradycyjną, papierową książką. Zależność od dostępu do internetu/technologii.",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Powtórki materiału"
+            ],
+            "Funkcje ": [
+                "czytanie"
+            ],
+            "Grupa docelowa": [
+                "Dla nauczycieli"
+            ],
+            "Koszt użytkowania": [
+                "Bezpłatnie"
+            ],
+            "Wymagane jest logowanie": [
+                "nie"
+            ],
+            "Ocena ogólna": [
+                "5"
+            ],
+            "Obsługiwana platforma": [
+                "przeglądarka internetowa"
+            ],
+            "Typ interakcji": [
+                "Pasywna (tylko przeglądanie treści)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Regulacja trudności"
+            ],
+            "Typ zastosowań": [
+                "Wielofunkcyjne (przeznaczone do różnych zastosowań lub łączące kilka obszarów edukacyjnych)"
+            ],
+            "Język": [
+                "polski"
+            ]
+        }
+    },
+    {
+        "id": 80,
+        "name": "WriteReader",
+        "link": "https://www.writereader.com/",
+        "desc": "WriteReader – WriteReader to narzędzie, które pozwala dzieciom tworzyć własne książki i historie cyfrowe.",
+        "pros": "- Aplikacja WriteReader umożliwia dzieciom tworzenie własnych książek. \n- Istnieje możliwość drukowania stworzonych książek\n- Bardzo dobrą jest funkcja \"tekst nauczyciela\", która polega na tym, że dziecko pisze swoją wersję pod obrazkiem, a nauczyciel wpisuje poprawną formę bezpośrednio pod spodem, bez usuwania błędów dziecka, co nie demotywuje dziecka i nie wzmacnia strachu przed popełnieniem błędu\n- Atrakcyjna forma pracy dla uczniów\n- Aplikacja umożliwia personalizację treści - dodawanie własnych zdjęć, korzystanie z bezpłatnej wyszukiwarki obrazów oraz nagrywania własnego głosu; angażuje różne zmysły i style uczenia się\n- Aplikacja jest prosta i intuicyjna w obsłudze",
+        "cons": "- Wymaga stabilnego łącza internetowego\n- Wersja bezpłatna ma ograniczenia w liczbie stworzonych książek\n- Strona główna aplikacji, menu jest w języku angielskim ",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Nauczanie zdalne"
+            ],
+            "Funkcje ": [
+                "Gotowe ćwiczenia"
+            ],
+            "Grupa docelowa": [
+                "Dla nauczycieli"
+            ],
+            "Koszt użytkowania": [
+                "Freemium (niektóre opcje są bezpłatne, inne wymagają opłaty)"
+            ],
+            "Wymagane jest logowanie": [
+                "tak"
+            ],
+            "Ocena ogólna": [
+                "5"
+            ],
+            "Obsługiwana platforma": [
+                "przeglądarka internetowa"
+            ],
+            "Typ interakcji": [
+                "Interaktywna (dziecko ma wpływ na działanie aplikacji)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Możliwość nagrywania głosu"
+            ],
+            "Typ zastosowań": [
+                "Wielofunkcyjne (przeznaczone do różnych zastosowań lub łączące kilka obszarów edukacyjnych)"
+            ],
+            "Język": [
+                "wielojęzyczny"
+            ]
+        }
+    },
+    {
+        "id": 81,
+        "name": "Zintegrowana Platforma Edukacyjna",
+        "link": "https://zpe.gov.pl/",
+        "desc": "Zintegrowana Platforma Edukacyjna – polska platforma edukacyjna zawierająca materiały, ćwiczenia i zasoby dla uczniów i nauczycieli.",
+        "pros": "Na stronie znajduje się wiele materiałów dydaktycznych gotowych do pobrania i druku. Jest to oficjalna strona gov dzięki czemu możemy mieć pewność, że materiały, które się tam znajdują są poprawne.; gotowe scenariusze lekcji z opisem krok po kroku",
+        "cons": "Brak możliwości modyfikowania pomocy dydaktycznych. Platforma przeznaczona jedynie dla nauczycieli; brak",
+        "tags": {
+            "Cel wykorzystywania": [
+                "Nauczanie zdalne"
+            ],
+            "Funkcje ": [
+                "Personalizacja poziomu trudności"
+            ],
+            "Grupa docelowa": [
+                "Dla wszystkich grup wiekowych"
+            ],
+            "Koszt użytkowania": [
+                "Bezpłatnie"
+            ],
+            "Wymagane jest logowanie": [
+                "nie"
+            ],
+            "Ocena ogólna": [
+                "5"
+            ],
+            "Obsługiwana platforma": [
+                "przeglądarka internetowa"
+            ],
+            "Typ interakcji": [
+                "Ograniczona interaktywność (dozwolone są tylko określone działania)"
+            ],
+            "Wsparcie specjalnych potrzeb": [
+                "Regulacja trudności"
+            ],
+            "Typ zastosowań": [
+                "Wielofunkcyjne (przeznaczone do różnych zastosowań lub łączące kilka obszarów edukacyjnych)"
+            ],
+            "Język": [
+                "polski"
+            ]
+        }
+    }
+];;
+
+const filterGroups = {"Cel wykorzystywania": ["Nauczanie zdalne", "Podczas lekcji", "Powtórki materiału", "Praca grupowa", "Praca indywidualna", "Zadanie domowe", "Zajęcia wyrównawcze", "codzienna praca wychowawcza"], "Funkcje ": ["Automatyczna informacja zwrotna", "Elementy grywalizacji", "Gotowe ćwiczenia", "Integracja z innymi platformami", "Interaktywne plansze, gotowe opisy gatunków", "Monitorowanie postępów ucznia", "Możliwość nagrywania dźwięku, personalizacja treści, udostępnianie materiałów online", "Obsługa multimediów", "Ożywianie stworzonych przez siebie prac (po zeskanowaniu postać/rysunek staje się trójwymiarowy", "Personalizacja poziomu trudności", "Praca offline", "Tryb prezentacji", "Tworzenie własnych materiałów", "Umożliwia komunikację z nauczycielami, rodzicami, bezpieczne udostępnianie zdjęć", "czytanie", "wiadomości do rodziców, zarządzanie klasą"], "Grupa docelowa": ["3-5 lat", "6-7 lat", "8 i starsze", "Dla nauczycieli", "Dla wszystkich grup wiekowych"], "Koszt użytkowania": ["Bezpłatnie", "Dla posiadaczy licencji edukacyjnej (dla szkół)", "Freemium (niektóre opcje są bezpłatne, inne wymagają opłaty)", "Subskrypcja (opłata cykliczna)", "Zakup jednorazowy"], "Wymagane jest logowanie": ["nie", "tak", "tworzenie tak, oglądanie nie"], "Ocena ogólna": ["3", "4", "5"], "Obsługiwana platforma": ["komputer - Mac OS", "komputer - Windows", "przeglądarka internetowa", "tablet - Android", "tablet - iPad OS / iOS"], "Typ interakcji": ["Interaktywna (dziecko ma wpływ na działanie aplikacji)", "Nie dotyczy", "Ograniczona interaktywność (dozwolone są tylko określone działania)", "Pasywna (tylko przeglądanie treści)"], "Wsparcie specjalnych potrzeb": ["Angażuje sensorycznie", "Brak przebodźcowania ( brak agresywnych dzwięków i szybkich animacji)", "Ciemny i jasny motyw", "Duże czcionki", "Możliwość nagrywania głosu", "Możliwość nagrywania głosu i dodawania multimediów", "Nauka we własnym tempie", "Nie posiada takich funkcji", "Piktogramy", "Regulacja trudności", "Synteza mowy", "Wysoki kontrast", "krótkie zdania, natychmiastowa informacja zwrotna, możliwość pracy we własnym tempie", "przejrzystość", "współpraca z opiekunami/ rodzicami"], "Typ zastosowań": ["Edukacja przyrodnicza", "Gry edukacyjne", "Logiczne myślenie", "Materiały multimedialne (np. edukacyjne piosenki, filmy)", "Narzędzia do komunikacji z rodzicami", "Narzędzia do projektowania pomocy dydaktycznych", "Narzędzie służy również do losowania grup, osób - przydatne dla nauczyciela", "Nauka czytania i pisania", "Nauka języka obcego", "Platforma do zarządzania klasą, motywowania uczniów i śledzenia postępów", "Pozwala porządkować rozsypane po internecie materiały w tematyczne kolekcje.", "Rozwijanie kompetencji cyfrowych (Edukacja informatyczna)", "Rozwijanie kreatywności / twórczości", "Rozwijanie umiejętności matematycznych", "Rozwijanie umiejętności muzycznych", "Rozwijanie umiejętności społecznych", "Tworzenie interaktywnych książek, storytelling", "Wielofunkcyjne (przeznaczone do różnych zastosowań lub łączące kilka obszarów edukacyjnych)"], "Język": ["angielski", "polski", "wielojęzyczny"]};
+
+let activeFilters = {};
+let searchQuery = '';
+
+function renderFilters() {
+
+    const container = document.getElementById('filters');
+
+    let html = '';
+
+    Object.entries(filterGroups).forEach(([group, values]) => {
+
+        html += `
+            <div class="group">
+                <div class="group-title">${group}</div>
+
+                ${values.map(value => `
+
+                    <button
+                        class="filter-btn ${activeFilters[group] === value ? 'active' : ''}"
+                        onclick="toggleFilter('${group}','${value}')">
+
+                        ${value}
+
+                    </button>
+
+                `).join('')}
+
+            </div>
+        `;
+    });
+
+    container.innerHTML = html;
+}
+
+function toggleFilter(group, value) {
+
+    if(activeFilters[group] === value) {
+        delete activeFilters[group];
+    } else {
+        activeFilters[group] = value;
+    }
+
+    renderFilters();
+    render();
+}
+
+document.getElementById('search').addEventListener('input', e => {
+    searchQuery = e.target.value.toLowerCase();
+    render();
+});
+
+function icon(tool) {
+
+    const allTags = Object.values(tool.tags).flat();
+
+    if(allTags.includes('Gry edukacyjne')) return '🎮';
+    if(allTags.includes('Projektowanie')) return '🎨';
+    if(allTags.includes('Zarządzanie klasą')) return '👩‍🏫';
+    if(allTags.includes('Karty pracy')) return '📄';
+
+    return '✨';
+}
+
+function render() {
+
+    const grid = document.getElementById('grid');
+
+    const filtered = tools.filter(tool => {
+
+        const searchMatch =
+            tool.name.toLowerCase().includes(searchQuery) ||
+            tool.desc.toLowerCase().includes(searchQuery);
+
+        if(!searchMatch) return false;
+
+        for(const [group, value] of Object.entries(activeFilters)) {
+
+            if(!tool.tags[group] || !tool.tags[group].includes(value)) {
+                return false;
+            }
+        }
+
+        return true;
+    });
+
+    grid.innerHTML = filtered.map(tool => {
+
+        const allTags = Object.values(tool.tags).flat();
+
+        return `
+
+            <div class="card" onclick="showDetails(${tool.id})">
+
+                <div class="card-icon">${icon(tool)}</div>
+
+                <h3>${tool.name}</h3>
+
+                <p>${tool.desc.substring(0,120)}...</p>
+
+                <div>
+
+                    ${allTags.slice(0,4).map(tag =>
+                        `<span class="tag">${tag}</span>`
+                    ).join('')}
+
+                </div>
+
+            </div>
+
+        `;
+    }).join('');
+}
+
+
+function showDetails(id) {
+
+    const tool = tools.find(t => t.id === id);
+
+    let groupedTags = Object.entries(tool.tags).map(([group, tags]) => `
+        <div class="group">
+            <div class="group-title">${group}</div>
+            ${tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+        </div>
+    `).join('');
+
+    document.getElementById('modal-body').innerHTML = `
+
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+
+        <h2 class="modal-title">${tool.name}</h2>
+
+        <a href="${tool.link}" target="_blank" class="btn-link">
+            Otwórz narzędzie
+        </a>
+
+	<p><strong>Opis:</strong> ${tool.desc}</p>
+
+        <p><strong>Zalety:</strong> ${tool.pros}</p>
+
+        <p><strong>Wady:</strong> ${tool.cons}</p>
+
+        <div style="margin-top:25px">
+            ${groupedTags}
+        </div>
+
+        
+    `;
+
+    document.getElementById('modal').style.display = 'flex';
+}
+
+
+function closeModal() {
+    document.getElementById('modal').style.display = 'none';
+}
+
+window.onclick = function(e) {
+    if(e.target === document.getElementById('modal')) {
+        closeModal();
+    }
+}
+
+renderFilters();
+render();
+
+</script>
+
+</body>
+</html>
